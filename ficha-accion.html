@@ -183,8 +183,12 @@
     .btn-favourite {
       width: 20px; height: 20px;
       position: relative; overflow: hidden; cursor: pointer; flex-shrink: 0;
+      background: none; border: none; padding: 0;
     }
-    .btn-favourite svg { position: absolute; inset: 2.14% 0; }
+    .btn-favourite svg { position: absolute; inset: 2.14% 0; transition: opacity 0.15s; }
+    .btn-favourite .star-filled { opacity: 0; }
+    .btn-favourite.active .star-outline { opacity: 0; }
+    .btn-favourite.active .star-filled { opacity: 1; }
     .metadata-row { display: flex; align-items: center; gap: 16px; }
     .dropdown-pill {
       display: inline-flex; align-items: center; gap: 8px;
@@ -641,11 +645,16 @@
             <div class="company-name-row">
               <h1 class="company-name">Telefónica</h1>
               <!-- Favourite star (node 625:19333, imgVector9) -->
-              <div class="btn-favourite">
-                <svg viewBox="0 0 20 19.1425" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button class="btn-favourite" aria-label="Añadir a favoritos" aria-pressed="false">
+                <!-- Outline (default) -->
+                <svg class="star-outline" viewBox="0 0 20 19.1425" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M18.9757 6.41168L13.514 5.61542L11.0729 0.665893C10.6355-0.216348 9.36823-0.227563 8.9271 0.665893L6.48599 5.61542L1.02432 6.41168C0.0448775 6.55373-0.347645 7.76121 0.362634 8.4528L4.31403 12.3033L3.37945 17.7425C3.21123 18.7257 4.24674 19.4621 5.11403 19.0023L10 16.4341L14.886 19.0023C15.7533 19.4584 16.7888 18.7257 16.6206 17.7425L15.686 12.3033L19.6374 8.4528C20.3476 7.76121 19.9551 6.55373 18.9757 6.41168ZM13.7607 11.6752L14.6467 16.849L10 14.4079L5.35328 16.849L6.23926 11.6752L2.47852 8.01167L7.67477 7.25654L10 2.54626L12.3252 7.25654L17.5215 8.01167L13.7607 11.6752Z" fill="#0B0B0B"/>
                 </svg>
-              </div>
+                <!-- Filled (activo) -->
+                <svg class="star-filled" viewBox="0 0 20 19.1425" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.9757 6.41168L13.514 5.61542L11.0729 0.665893C10.6355-0.216348 9.36823-0.227563 8.9271 0.665893L6.48599 5.61542L1.02432 6.41168C0.0448775 6.55373-0.347645 7.76121 0.362634 8.4528L4.31403 12.3033L3.37945 17.7425C3.21123 18.7257 4.24674 19.4621 5.11403 19.0023L10 16.4341L14.886 19.0023C15.7533 19.4584 16.7888 18.7257 16.6206 17.7425L15.686 12.3033L19.6374 8.4528C20.3476 7.76121 19.9551 6.55373 18.9757 6.41168Z" fill="#D4A000"/>
+                </svg>
+              </button>
             </div>
             <div class="metadata-row">
               <!-- Logo 32×32 — visible only on mobile -->
@@ -862,6 +871,14 @@
 
   /* Evitar que el click dentro del popover lo cierre */
   popover.addEventListener('click', function (e) { e.stopPropagation(); });
+
+  /* _addFavouriteButton — toggle outline ↔ filled */
+  document.querySelectorAll('.btn-favourite').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var isActive = btn.classList.toggle('active');
+      btn.setAttribute('aria-pressed', isActive);
+    });
+  });
 })();
 </script>
 
