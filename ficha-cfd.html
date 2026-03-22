@@ -13,7 +13,7 @@
       font-family: 'Open Sans', sans-serif;
       background: #DEE1E6;
       width: 100%;
-      min-width: 390px;
+      min-width: 320px;
     }
 
     /* ─── HEADER TOP (black strip) ─── */
@@ -178,7 +178,7 @@
     .company-name {
       font-family: 'Exo 2', sans-serif;
       font-weight: 700; font-size: 40px; line-height: 44px;
-      color: #0B0B0B; white-space: nowrap;
+      color: #0B0B0B;
     }
     .btn-favourite {
       width: 20px; height: 20px;
@@ -372,6 +372,9 @@
       display: flex; align-items: center; justify-content: center;
     }
 
+    /* Risk row — solo visible en mobile */
+    .risk-row { display: none; align-items: center; gap: 2px; }
+
     /* ─── MOBILE UTILITIES ─── */
     .mobile-only { display: none; }
     .button-dock { display: none; }
@@ -482,14 +485,15 @@
       /* Company row */
       .company-row { flex-direction: column; align-items: flex-start; gap: 16px; }
       .company-logo-wrap { display: none; }
-      .company-info { width: 100%; display: flex; flex-direction: column; }
-      .company-name-row { order: 2; }
+      .company-info { width: 100%; display: flex; flex-direction: column; gap: 12px; }
       .metadata-row { order: 1; flex-wrap: nowrap; gap: 12px; }
+      .company-name-row { order: 2; }
+      .risk-row { display: flex; order: 3; }
+      .metadata-row .risk-indicator { display: none; }
       .logo-mobile { display: flex; }
-      .meta-group { order: 1; }
       .dropdown-pill { order: 2; }
-      .company-name { font-size: 32px; line-height: 36px; }
-      .btn-favourite { width: 24px; height: 24px; }
+      .company-name { font-size: 32px; line-height: 36px; white-space: normal; word-break: break-word; max-width: 100%; }
+      .btn-favourite { width: 24px; height: 24px; flex-shrink: 0; }
       .btn-favourite svg { position: absolute; inset: 0; }
 
       /* Product row */
@@ -656,6 +660,17 @@
                 </svg>
               </div>
             </div>
+            <!-- Risk row — solo visible en mobile (Figma: debajo del nombre) -->
+            <div class="risk-row">
+              <div class="risk-box">1</div>
+              <div class="risk-box">2</div>
+              <div class="risk-box">3</div>
+              <div class="risk-box">4</div>
+              <div class="risk-box">5</div>
+              <div class="risk-box">6</div>
+              <div class="risk-box selected">7</div>
+            </div>
+
             <div class="metadata-row">
               <!-- Logo 32×32 — visible only on mobile -->
               <div class="logo-mobile">
