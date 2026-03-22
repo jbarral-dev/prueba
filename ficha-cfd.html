@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Banco de Inversión en España - Renta 4</title>
+  <title>CFD Telefónica - Renta 4</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -170,7 +170,7 @@
     }
     .company-logo-wrap svg {
       position: absolute;
-      inset: 22.73%; /* 88×0.2273≈20px → inner 48×48 */
+      inset: 22.73%;
       display: block;
     }
     .company-info { display: flex; flex-direction: column; gap: 12px; }
@@ -199,6 +199,22 @@
     .meta-group { display: flex; align-items: center; gap: 8px; }
     .meta-text { font-size: 16px; font-weight: 400; line-height: 24px; color: #3B3B3B; }
     .meta-divider { width: 1px; background: #E0E0E0; align-self: stretch; }
+
+    /* ─── RISK INDICATOR ─── */
+    .risk-indicator {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .risk-box {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px; font-weight: 400; line-height: 1;
+      background: #E0E0E0; color: #0B0B0B;
+      flex-shrink: 0;
+    }
+    .risk-box.selected { background: #0B0B0B; color: #fff; }
 
     /* Product row */
     .product-row {
@@ -302,7 +318,7 @@
     }
     .chart-x-axis span { font-size: 12px; color: #707070; }
 
-    /* ─── DROPDOWN POPOVER (Figma node 657:47904) ─── */
+    /* ─── DROPDOWN POPOVER ─── */
     .dropdown-wrap {
       position: relative;
       display: inline-flex;
@@ -456,17 +472,16 @@
 
       /* Page layout */
       .hydra-container { padding: 0; max-width: 100%; }
-      .page { padding-bottom: 88px; } /* space for fixed dock */
+      .page { padding-bottom: 88px; }
       .page-title-product { padding: 32px 0; gap: 16px; }
       .breadcrumb { display: none; }
       .headlines { gap: 16px; padding: 0 12px; }
 
-      /* Order on mobile: headlines → tabs (same as desktop) */
       .page-title-product { display: flex; flex-direction: column; }
 
       /* Company row */
       .company-row { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .company-logo-wrap { display: none; } /* hide 88×88; mobile uses 32×32 */
+      .company-logo-wrap { display: none; }
       .company-info { width: 100%; display: flex; flex-direction: column; }
       .company-name-row { order: 2; }
       .metadata-row { order: 1; flex-wrap: nowrap; gap: 12px; }
@@ -484,7 +499,7 @@
         gap: 12px;
       }
       .product-info { flex-wrap: wrap; gap: 12px; align-items: flex-end; }
-      .product-actions { display: none; } /* moved to fixed button dock */
+      .product-actions { display: none; }
       .price-value { font-size: 28px; line-height: 32px; }
       .price-currency { font-size: 20px; line-height: 26px; }
       .variation-value { font-size: 20px; line-height: 24px; }
@@ -523,12 +538,10 @@
 <!-- ═══ HEADER TOP ═══ -->
 <div class="header-top">
   <a href="#" class="header-top-item">
-    <!-- Star icon (Favoritos) -->
     <svg width="16" height="16" viewBox="0 0 16 15.314" fill="none"><path d="M15.1805 5.12934L10.8112 4.49233L8.85832 0.532715C8.50841-0.173079 7.49458-0.18205 7.14168 0.532715L5.18879 4.49233L0.819452 5.12934C0.035902 5.24299-0.278116 6.20897 0.290107 6.76224L3.45122 9.8426L2.70356 14.194C2.56898 14.9805 3.39739 15.5697 4.09122 15.2018L8 13.1473L11.9088 15.2018C12.6026 15.5667 13.431 14.9805 13.2964 14.194L12.5488 9.8426L15.7099 6.76224C16.2781 6.20897 15.9641 5.24299 15.1805 5.12934Z" fill="#E0E0E0" fill-opacity="0" stroke="#E0E0E0" stroke-width="1"/></svg>
     Favoritos
   </a>
   <a href="#" class="header-top-item">
-    <!-- Search icon (Buscador) -->
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.8898 14.6524L12.0963 10.8588C12.0244 10.787 11.9307 10.7495 11.8307 10.7495H11.4182C12.4025 9.60891 12.9994 8.1246 12.9994 6.49968C12.9994 2.90923 10.0901 0 6.49968 0C2.90923 0 0 2.90923 0 6.49968C0 10.0901 2.90923 12.9994 6.49968 12.9994C8.1246 12.9994 9.60891 12.4025 10.7495 11.4182V11.8307C10.7495 11.9307 10.7901 12.0244 10.8588 12.0963L14.6524 15.8898C14.7993 16.0367 15.0368 16.0367 15.1836 15.8898L15.8898 15.1836C16.0367 15.0368 16.0367 14.7993 15.8898 14.6524ZM6.49968 11.4994C3.73732 11.4994 1.49993 9.26205 1.49993 6.49968C1.49993 3.73732 3.73732 1.49993 6.49968 1.49993C9.26205 1.49993 11.4994 3.73732 11.4994 6.49968C11.4994 9.26205 9.26205 11.4994 6.49968 11.4994Z" fill="#E0E0E0"/></svg>
     Buscador
   </a>
@@ -544,7 +557,6 @@
 <nav class="site-nav">
   <div class="nav-left">
     <div class="nav-logo-wrap">
-      <!-- R4 Isotipo — extraído de Figma node imgLogo (413514db...) -->
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;display:block;">
         <path d="M0 0V40H40V0H0ZM13.125 15.25V32.375H7.625V14.875C7.625 11 10.75 7.75 14.625 7.625H14.75H23L20.375 13.25H15.125C14.125 13.25 13.125 14.125 13.125 15.25ZM30.375 22.5C31.125 22.5 31.625 22.875 32 23.375C32 23.375 32 23.5 32.125 23.5C32.375 23.875 32.375 24.125 32.375 24.625V32.5H26.75V27.375H20.125C20 27.375 19.75 27.375 19.625 27.375C18.75 27.125 18 26.375 18 25.375C18 25 18.125 24.75 18.25 24.5L18.375 24.375L19.375 22.25L26.25 7.625H32.375L25.375 22.5H30.375Z" fill="white"/>
       </svg>
@@ -556,7 +568,6 @@
     </ul>
   </div>
   <div class="nav-right">
-    <!-- Mobile-only icons (Favoritos + Buscador + Tu asesor) -->
     <div class="nav-mobile-icons">
       <button class="icon-btn" aria-label="Favoritos">
         <svg width="16" height="16" viewBox="0 0 16 15.314" fill="none"><path d="M15.1805 5.12934L10.8112 4.49233L8.85832 0.532715C8.50841-0.173079 7.49458-0.18205 7.14168 0.532715L5.18879 4.49233L0.819452 5.12934C0.035902 5.24299-0.278116 6.20897 0.290107 6.76224L3.45122 9.8426L2.70356 14.194C2.56898 14.9805 3.39739 15.5697 4.09122 15.2018L8 13.1473L11.9088 15.2018C12.6026 15.5667 13.431 14.9805 13.2964 14.194L12.5488 9.8426L15.7099 6.76224C16.2781 6.20897 15.9641 5.24299 15.1805 5.12934Z" fill="none" stroke="#0B0B0B" stroke-width="1"/></svg>
@@ -594,31 +605,34 @@
   <div class="hydra-container">
     <div class="page-title-product">
 
-      <!-- BREADCRUMB — Figma node 625:19326 · Show Level 5=false · Current Page="Telefónica" -->
+      <!-- BREADCRUMB — Home > Invertir (muted) > Derivados > Opciones > Telefónica > Call Telefonica 06/2026 2,2 -->
       <div class="breadcrumb">
-        <!-- Home icon — ic-home-alt -->
         <div class="bc-level" style="gap:8px;">
           <svg width="20" height="16" viewBox="0 0 20 15.555" fill="none"><path d="M19.799 7.479L11.245.451C10.895.159 10.454 0 9.999 0 9.544 0 9.103.159 8.754.451L.199 7.479C.143 7.526.097 7.583.063 7.648.029 7.712.009 7.783.002 7.856-.004 7.928.004 8.002.026 8.071.047 8.141.083 8.205.13 8.261L.485 8.689C.58 8.801.715 8.872.862 8.885 1.009 8.898 1.154 8.852 1.267 8.758L2.221 7.975V14.444C2.222 14.738 2.339 15.02 2.548 15.229 2.756 15.437 3.038 15.554 3.332 15.555H7.777C8.071 15.554 8.353 15.437 8.562 15.229 8.77 15.02 8.887 14.738 8.888 14.444V10.833H11.11V14.444C11.111 14.738 11.228 15.02 11.437 15.229 11.645 15.437 11.927 15.554 12.221 15.555H16.666C16.959 15.554 17.24 15.438 17.448 15.232 17.656 15.025 17.774 14.745 17.777 14.452V7.974L18.733 8.759C18.846 8.854 18.992 8.9 19.138 8.887 19.285 8.874 19.421 8.803 19.515 8.69L19.87 8.263C19.917 8.207 19.953 8.142 19.975 8.072 19.997 8.003 20.004 7.929 19.998 7.856 19.991 7.783 19.97 7.712 19.936 7.648 19.902 7.583 19.856 7.526 19.799 7.479ZM16.105 13.888H12.777V10.277C12.776 9.983 12.659 9.7 12.451 9.492 12.242 9.284 11.96 9.167 11.666 9.166H8.332C8.038 9.167 7.756 9.284 7.548 9.492 7.339 9.7 7.222 9.983 7.221 10.277V13.888H3.888V6.606L9.999 1.584 16.11 6.604 16.105 13.888Z" fill="#9D4858"/></svg>
-          <!-- ic-angle-right 12×12 -->
           <svg width="5" height="8" viewBox="0 0 4.468 7.501" fill="none"><path d="M4.386 3.95L.945 7.419C.835 7.529.657 7.529.547 7.419L.083 6.954C-.028 6.844-.028 6.666.083 6.556L2.86 3.751.083.945C-.028.835-.028.657.083.547L.547.083C.657-.028.835-.028.945.083L4.386 3.551C4.496 3.662 4.496 3.84 4.386 3.95Z" fill="#0B0B0B"/></svg>
         </div>
-        <!-- Level 2: Invertir — fill #9D4858 (mismo color que el resto) -->
+        <!-- Level 2: Invertir — fill #696A6C (muted gray) -->
         <div class="bc-level">
-          <span class="bc-link">Invertir</span>
+          <span class="bc-link-muted">Invertir</span>
           <svg width="5" height="8" viewBox="0 0 4.468 7.501" fill="none"><path d="M4.386 3.95L.945 7.419C.835 7.529.657 7.529.547 7.419L.083 6.954C-.028 6.844-.028 6.666.083 6.556L2.86 3.751.083.945C-.028.835-.028.657.083.547L.547.083C.657-.028.835-.028.945.083L4.386 3.551C4.496 3.662 4.496 3.84 4.386 3.95Z" fill="#0B0B0B"/></svg>
         </div>
-        <!-- Level 3: Bolsas -->
+        <!-- Level 3: Derivados -->
         <div class="bc-level">
-          <span class="bc-link">Bolsas</span>
+          <span class="bc-link">Derivados</span>
           <svg width="5" height="8" viewBox="0 0 4.468 7.501" fill="none"><path d="M4.386 3.95L.945 7.419C.835 7.529.657 7.529.547 7.419L.083 6.954C-.028 6.844-.028 6.666.083 6.556L2.86 3.751.083.945C-.028.835-.028.657.083.547L.547.083C.657-.028.835-.028.945.083L4.386 3.551C4.496 3.662 4.496 3.84 4.386 3.95Z" fill="#0B0B0B"/></svg>
         </div>
-        <!-- Level 4: Bolsa Nacional -->
+        <!-- Level 4: Opciones -->
         <div class="bc-level">
-          <span class="bc-link">Bolsa Nacional</span>
+          <span class="bc-link">Opciones</span>
           <svg width="5" height="8" viewBox="0 0 4.468 7.501" fill="none"><path d="M4.386 3.95L.945 7.419C.835 7.529.657 7.529.547 7.419L.083 6.954C-.028 6.844-.028 6.666.083 6.556L2.86 3.751.083.945C-.028.835-.028.657.083.547L.547.083C.657-.028.835-.028.945.083L4.386 3.551C4.496 3.662 4.496 3.84 4.386 3.95Z" fill="#0B0B0B"/></svg>
         </div>
-        <!-- Current Page: Telefónica (Show Level 5=false → no hay nivel 5 como link) -->
-        <span class="bc-current">Telefónica</span>
+        <!-- Level 5: Telefónica -->
+        <div class="bc-level">
+          <span class="bc-link">Telefónica</span>
+          <svg width="5" height="8" viewBox="0 0 4.468 7.501" fill="none"><path d="M4.386 3.95L.945 7.419C.835 7.529.657 7.529.547 7.419L.083 6.954C-.028 6.844-.028 6.666.083 6.556L2.86 3.751.083.945C-.028.835-.028.657.083.547L.547.083C.657-.028.835-.028.945.083L4.386 3.551C4.496 3.662 4.496 3.84 4.386 3.95Z" fill="#0B0B0B"/></svg>
+        </div>
+        <!-- Current Page -->
+        <span class="bc-current">Call Telefonica 06/2026 2,2</span>
       </div>
 
       <!-- HEADLINES -->
@@ -626,12 +640,7 @@
 
         <!-- Company row -->
         <div class="company-row">
-          <!--
-            Logo Telefónica — componente Figma node 285:6420 / I625:19329;211:5982
-            Círculo azul #0066FF, border-radius 100px
-            Vector dots (node I625:19329;211:5982;16:55): viewBox 0 0 48 48,
-            posicionado en inset 22.73% del contenedor 88×88px
-          -->
+          <!-- Logo Telefónica — círculo azul #0066FF con dots SVG -->
           <div class="company-logo-wrap">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
               <path d="M14.3232 7.1616C14.3232 3.2064 11.1168 0 7.1616 0C3.2064 0 0 3.2064 0 7.1616C0 11.1168 3.2064 14.3232 7.1616 14.3232C11.1168 14.3232 14.3232 11.1168 14.3232 7.1616ZM31.1616 7.1616C31.1616 3.2064 27.9552 0 24 0C20.0448 0 16.8384 3.2064 16.8384 7.1616C16.8384 11.1168 20.0448 14.3232 24 14.3232C27.9552 14.3232 31.1616 11.1168 31.1616 7.1616ZM48 7.1616C48 3.2064 44.7936 0 40.8384 0C36.8832 0 33.6768 3.2064 33.6768 7.1616C33.6768 11.1168 36.8832 14.3232 40.8384 14.3232C44.7936 14.3232 48 11.1168 48 7.1616ZM31.1616 24C31.1616 20.0448 27.9552 16.8384 24 16.8384C20.0448 16.8384 16.8384 20.0448 16.8384 24C16.8384 27.9552 20.0448 31.1616 24 31.1616C27.9552 31.1616 31.1616 27.9552 31.1616 24ZM31.1616 40.8384C31.1616 36.8832 27.9552 33.6768 24 33.6768C20.0448 33.6768 16.8384 36.8832 16.8384 40.8384C16.8384 44.7936 20.0448 48 24 48C27.9552 48 31.1616 44.7936 31.1616 40.8384Z" fill="white"/>
@@ -640,8 +649,7 @@
 
           <div class="company-info">
             <div class="company-name-row">
-              <h1 class="company-name">Telefónica</h1>
-              <!-- Favourite star (node 625:19333, imgVector9) -->
+              <h1 class="company-name">CFD Telefónica</h1>
               <div class="btn-favourite">
                 <svg viewBox="0 0 20 19.1425" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M18.9757 6.41168L13.514 5.61542L11.0729 0.665893C10.6355-0.216348 9.36823-0.227563 8.9271 0.665893L6.48599 5.61542L1.02432 6.41168C0.0448775 6.55373-0.347645 7.76121 0.362634 8.4528L4.31403 12.3033L3.37945 17.7425C3.21123 18.7257 4.24674 19.4621 5.11403 19.0023L10 16.4341L14.886 19.0023C15.7533 19.4584 16.7888 18.7257 16.6206 17.7425L15.686 12.3033L19.6374 8.4528C20.3476 7.76121 19.9551 6.55373 18.9757 6.41168ZM13.7607 11.6752L14.6467 16.849L10 14.4079L5.35328 16.849L6.23926 11.6752L2.47852 8.01167L7.67477 7.25654L10 2.54626L12.3252 7.25654L17.5215 8.01167L13.7607 11.6752Z" fill="#0B0B0B"/>
@@ -655,9 +663,10 @@
                   <path d="M14.3232 7.1616C14.3232 3.2064 11.1168 0 7.1616 0C3.2064 0 0 3.2064 0 7.1616C0 11.1168 3.2064 14.3232 7.1616 14.3232C11.1168 14.3232 14.3232 11.1168 14.3232 7.1616ZM31.1616 7.1616C31.1616 3.2064 27.9552 0 24 0C20.0448 0 16.8384 3.2064 16.8384 7.1616C16.8384 11.1168 20.0448 14.3232 24 14.3232C27.9552 14.3232 31.1616 11.1168 31.1616 7.1616ZM48 7.1616C48 3.2064 44.7936 0 40.8384 0C36.8832 0 33.6768 3.2064 33.6768 7.1616C33.6768 11.1168 36.8832 14.3232 40.8384 14.3232C44.7936 14.3232 48 11.1168 48 7.1616ZM31.1616 24C31.1616 20.0448 27.9552 16.8384 24 16.8384C20.0448 16.8384 16.8384 20.0448 16.8384 24C16.8384 27.9552 20.0448 31.1616 24 31.1616C27.9552 31.1616 31.1616 27.9552 31.1616 24ZM31.1616 40.8384C31.1616 36.8832 27.9552 33.6768 24 33.6768C20.0448 33.6768 16.8384 36.8832 16.8384 40.8384C16.8384 44.7936 20.0448 48 24 48C27.9552 48 31.1616 44.7936 31.1616 40.8384Z" fill="white"/>
                 </svg>
               </div>
+              <!-- Dropdown pill — "CFDs" activo -->
               <div class="dropdown-wrap">
                 <div class="dropdown-pill" id="dropdown-trigger" role="button" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="dropdown-label">Acción</span>
+                  <span id="dropdown-label">CFDs</span>
                   <div class="dropdown-arrow">
                     <svg viewBox="0 0 25 14.894" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11.8379 14.6191L0.275391 3.15039C-0.0917969 2.7832-0.0917969 2.18945 0.275391 1.82227L1.82227 0.275391C2.18945-0.0917969 2.7832-0.0917969 3.15039 0.275391L12.502 9.5332L21.8535 0.275391C22.2207-0.0917969 22.8145-0.0917969 23.1816 0.275391L24.7285 1.82227C25.0957 2.18945 25.0957 2.7832 24.7285 3.15039L13.166 14.6191C12.7988 14.9863 12.2051 14.9863 11.8379 14.6191Z" fill="#0B0B0B"/>
@@ -665,20 +674,19 @@
                   </div>
                 </div>
 
-                <!-- PopoverValues — Figma node 657:47904 · 148px · border #E0E0E0 · shadow 0 0 8px rgba(0,0,0,.2) -->
+                <!-- PopoverValues — "CFDs" es la opción activa; "Acción" navega a ficha-accion.html -->
                 <div class="popover-values" id="popover-values" role="listbox">
                   <div class="popover-list">
-                    <div class="popover-item active" data-value="Acción" role="option" aria-selected="true">
+                    <div class="popover-item" data-value="Acción" data-href="ficha-accion.html" role="option" aria-selected="false">
                       <span class="popover-item-label">Acción</span>
-                      <!-- ic-check — Figma node 423:13497 · 14.29×11 dentro de 16×16 -->
+                    </div>
+                    <div class="popover-item active" data-value="CFDs" role="option" aria-selected="true">
+                      <span class="popover-item-label">CFDs</span>
                       <span class="popover-check">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M1.5 8.5L5.86 13L14.5 3" stroke="#0B0B0B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                       </span>
-                    </div>
-                    <div class="popover-item" data-value="CFDs" data-href="ficha-cfd.html" role="option" aria-selected="false">
-                      <span class="popover-item-label">CFDs</span>
                     </div>
                     <div class="popover-item" data-value="Futuros" role="option" aria-selected="false">
                       <span class="popover-item-label">Futuros</span>
@@ -692,10 +700,21 @@
                   </div>
                 </div>
               </div>
+              <!-- Ticker + ISIN -->
               <div class="meta-group">
                 <span class="meta-text">TEF</span>
                 <div class="meta-divider"></div>
-                <span class="meta-text">ES0173320039</span>
+                <span class="meta-text">ES0178430E18</span>
+              </div>
+              <!-- Risk Indicator — nivel 7 seleccionado (CFDs = riesgo máximo) -->
+              <div class="risk-indicator">
+                <div class="risk-box">1</div>
+                <div class="risk-box">2</div>
+                <div class="risk-box">3</div>
+                <div class="risk-box">4</div>
+                <div class="risk-box">5</div>
+                <div class="risk-box">6</div>
+                <div class="risk-box selected">7</div>
               </div>
             </div>
           </div>
@@ -705,18 +724,16 @@
         <div class="product-row">
           <div class="product-info">
             <div class="price-block">
-              <span class="price-value">3,593</span>
+              <span class="price-value">3,676</span>
               <span class="price-currency">EUR</span>
             </div>
             <div class="variation-block">
-              <!-- Triangle up -->
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M6 0L12 8H0L6 0Z" fill="#256603"/></svg>
-              <span class="variation-value">0,39%</span>
+              <span class="variation-value">0,66%</span>
             </div>
-            <span class="updated-text">23 Feb 2026, 11:39h</span>
+            <span class="updated-text">11:39h</span>
           </div>
           <div class="product-actions">
-            <!-- Three dots icon button -->
             <div class="btn-icon">
               <div class="btn-icon-inner">
                 <svg viewBox="0 0 3 12.5" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -724,7 +741,6 @@
                 </svg>
               </div>
             </div>
-            <!-- Contratar button -->
             <button class="btn-contratar">
               <div class="cart-icon-wrap">
                 <svg viewBox="0 0 16 14.2222" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -787,11 +803,11 @@
             <line x1="0" y1="120" x2="1200" y2="120" stroke="#E0E0E0" stroke-width="1"/>
             <line x1="0" y1="160" x2="1200" y2="160" stroke="#E0E0E0" stroke-width="1"/>
             <line x1="0" y1="199" x2="1200" y2="199" stroke="#E0E0E0" stroke-width="1"/>
-            <path d="M0,140 C80,128 120,88 160,78 C200,68 230,95 270,108 C310,122 330,112 360,95 C400,70 430,38 470,32 C510,26 535,52 565,70 C595,88 620,82 655,58 C690,34 710,14 750,10 C770,8 780,22 800,38 C830,68 845,110 870,140 C890,163 900,178 930,188 L930,200 L0,200Z" fill="url(#chartFill)"/>
-            <path d="M0,140 C80,128 120,88 160,78 C200,68 230,95 270,108 C310,122 330,112 360,95 C400,70 430,38 470,32 C510,26 535,52 565,70 C595,88 620,82 655,58 C690,34 710,14 750,10 C770,8 780,22 800,38 C830,68 845,110 870,140 C890,163 900,178 930,188" fill="none" stroke="#4A71C0" stroke-width="2"/>
+            <path d="M0,160 C60,155 90,148 130,140 C170,132 200,110 240,95 C280,80 310,72 350,60 C390,48 420,30 460,22 C500,14 530,20 560,32 C590,44 610,58 645,72 C680,86 700,100 740,118 C775,133 800,148 840,162 C870,172 890,180 930,188 L930,200 L0,200Z" fill="url(#chartFill)"/>
+            <path d="M0,160 C60,155 90,148 130,140 C170,132 200,110 240,95 C280,80 310,72 350,60 C390,48 420,30 460,22 C500,14 530,20 560,32 C590,44 610,58 645,72 C680,86 700,100 740,118 C775,133 800,148 840,162 C870,172 890,180 930,188" fill="none" stroke="#4A71C0" stroke-width="2"/>
             <line x1="870" y1="0" x2="870" y2="200" stroke="#ABABAB" stroke-width="1" stroke-dasharray="4 3"/>
-            <circle cx="750" cy="10" r="5" fill="#4A71C0" stroke="white" stroke-width="2"/>
-            <circle cx="870" cy="140" r="5" fill="#FF8C00" stroke="white" stroke-width="2"/>
+            <circle cx="460" cy="22" r="5" fill="#4A71C0" stroke="white" stroke-width="2"/>
+            <circle cx="870" cy="162" r="5" fill="#FF8C00" stroke="white" stroke-width="2"/>
           </svg>
         </div>
         <div class="chart-x-axis">
@@ -813,7 +829,7 @@
   const popover = document.getElementById('popover-values');
   const label   = document.getElementById('dropdown-label');
 
-  /* Toggle popover al hacer click en el pill */
+  /* Toggle popover */
   trigger.addEventListener('click', function (e) {
     e.stopPropagation();
     const isOpen = popover.classList.toggle('open');
@@ -840,14 +856,11 @@
       /* Activar el seleccionado */
       item.classList.add('active');
       item.setAttribute('aria-selected', 'true');
-      /* Añadir checkmark */
       var check = document.createElement('span');
       check.className = 'popover-check';
       check.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1.5 8.5L5.86 13L14.5 3" stroke="#0B0B0B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       item.appendChild(check);
-      /* Actualizar label del pill */
       label.textContent = item.dataset.value;
-      /* Cerrar */
       popover.classList.remove('open');
       trigger.classList.remove('open');
       trigger.setAttribute('aria-expanded', 'false');
@@ -868,13 +881,11 @@
 
 <!-- ═══ BUTTON DOCK (mobile fixed bottom) ═══ -->
 <div class="button-dock">
-  <!-- Más opciones (secondary icon-only) -->
   <button class="btn-dock-secondary" aria-label="Más opciones">
     <svg viewBox="0 0 3 12.5" fill="none" xmlns="http://www.w3.org/2000/svg" width="3" height="13">
       <path d="M1.5 4.75C2.32812 4.75 3 5.42188 3 6.25C3 7.07812 2.32812 7.75 1.5 7.75C0.671875 7.75 0 7.07812 0 6.25C0 5.42188 0.671875 4.75 1.5 4.75ZM0 1.5C0 2.32812 0.671875 3 1.5 3C2.32812 3 3 2.32812 3 1.5C3 0.671875 2.32812 0 1.5 0C0.671875 0 0 0.671875 0 1.5ZM0 11C0 11.8281 0.671875 12.5 1.5 12.5C2.32812 12.5 3 11.8281 3 11C3 10.1719 2.32812 9.5 1.5 9.5C0.671875 9.5 0 10.1719 0 11Z" fill="#851A2E"/>
     </svg>
   </button>
-  <!-- Contratar (primary) -->
   <button class="btn-dock-primary">
     <svg viewBox="0 0 16 14.2222" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="15" style="flex-shrink:0;">
       <path d="M15.3331 1.77778H4.00778L3.76539 0.538667C3.70417 0.225778 3.42994 0 3.11111 0H0.333333C0.14925 0 0 0.14925 0 0.333333V1C0 1.18408 0.14925 1.33333 0.333333 1.33333H2.56222L4.49539 11.2139C4.18878 11.5334 4 11.9667 4 12.4444C4 13.4263 4.79594 14.2222 5.77778 14.2222C6.75961 14.2222 7.55555 13.4263 7.55555 12.4444C7.5559 12.1323 7.47364 11.8256 7.31714 11.5556H11.3496C11.193 11.8256 11.1108 12.1323 11.1111 12.4444C11.1111 13.4263 11.9071 14.2222 12.8889 14.2222C13.8707 14.2222 14.6667 13.4263 14.6667 12.4444C14.6667 11.9407 14.4568 11.4862 14.1201 11.1627L14.1489 11.0306C14.2393 10.615 13.9227 10.2222 13.4974 10.2222H5.66L5.39917 8.88889H14.0771C14.3907 8.88889 14.6619 8.6703 14.7285 8.36383L15.9845 2.58606C16.0749 2.17053 15.7583 1.77778 15.3331 1.77778Z" fill="white"/>
