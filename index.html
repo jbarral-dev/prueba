@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu perfil — Renta 4 Banco (Prototipo redesign)</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --r4-dark: #1a3a4a;
+  --r4-header: #2c5f6e;
+  --r4-wine: #8b1a2b;
+  --r4-wine-hover: #a62038;
+  --r4-wine-light: #f8eff1;
+  --r4-bg: #f5f5f3;
+  --r4-white: #ffffff;
+  --r4-text: #2d2d2d;
+  --r4-text-secondary: #6b6b6b;
+  --r4-text-light: #999;
+  --r4-border: #e5e5e2;
+  --r4-border-light: #efefed;
+  --r4-accent-teal: #0d7377;
+  --r4-accent-teal-bg: #e8f4f4;
+  --r4-accent-amber: #c47e17;
+  --r4-accent-amber-bg: #fef8ec;
+  --r4-accent-blue: #2c6fbb;
+  --r4-accent-blue-bg: #edf3fb;
+  --r4-accent-purple: #6b52ae;
+  --r4-accent-purple-bg: #f1eff8;
+  --r4-accent-green: #2d8a4e;
+  --r4-accent-green-bg: #edf7f0;
+  --r4-shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --r4-shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+  --r4-shadow-hover: 0 6px 20px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--r4-bg);
+  color: var(--r4-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--r4-dark) 0%, var(--r4-header) 100%);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.header-logo svg { width: 28px; height: 28px; }
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  font-size: 13.5px;
+  font-weight: 400;
+}
+
+.header-nav a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.header-nav a:hover { color: white; background: rgba(255,255,255,0.1); }
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+}
+
+.header-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-contract {
+  background: var(--r4-wine);
+  color: white;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-contract:hover { background: var(--r4-wine-hover); }
+
+/* PAGE LAYOUT */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--r4-dark);
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  font-size: 15px;
+  color: var(--r4-text-secondary);
+  font-weight: 400;
+}
+
+/* SECTION ANCHORS */
+.section-anchors {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 56px;
+  z-index: 50;
+  background: var(--r4-bg);
+  padding: 12px 0 16px;
+  border-bottom: 1px solid var(--r4-border-light);
+}
+
+.anchor-pill {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--r4-border);
+  background: var(--r4-white);
+  color: var(--r4-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.anchor-pill:hover {
+  border-color: var(--r4-wine);
+  color: var(--r4-wine);
+  background: var(--r4-wine-light);
+}
+
+.anchor-pill.active {
+  border-color: var(--r4-wine);
+  color: var(--r4-wine);
+  background: var(--r4-wine-light);
+  font-weight: 600;
+}
+
+/* SECTIONS */
+.section {
+  margin-bottom: 28px;
+  animation: fadeUp 0.4s ease-out both;
+}
+
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.1s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.2s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.section-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.section-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--r4-dark);
+  letter-spacing: -0.2px;
+}
+
+.section-description {
+  font-size: 13px;
+  color: var(--r4-text-secondary);
+  font-weight: 400;
+  margin-top: 1px;
+}
+
+/* CARDS CONTAINER */
+.section-cards {
+  background: var(--r4-white);
+  border-radius: 14px;
+  box-shadow: var(--r4-shadow-sm);
+  overflow: hidden;
+  border: 1px solid var(--r4-border-light);
+}
+
+/* LINK ROW */
+.link-row {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.15s;
+  border-bottom: 1px solid var(--r4-border-light);
+  cursor: pointer;
+  gap: 14px;
+}
+
+.link-row:last-child { border-bottom: none; }
+
+.link-row:hover {
+  background: #fafaf9;
+}
+
+.link-row:hover .link-title {
+  color: var(--r4-wine);
+}
+
+.link-row:hover .link-arrow {
+  transform: translateX(3px);
+  color: var(--r4-wine);
+}
+
+.link-icon-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.link-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.link-title {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--r4-wine);
+  transition: color 0.15s;
+  line-height: 1.3;
+}
+
+.link-desc {
+  font-size: 12.5px;
+  color: var(--r4-text-light);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.link-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.badge-complete {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge-new {
+  background: var(--r4-accent-blue-bg);
+  color: var(--r4-accent-blue);
+}
+
+.link-arrow {
+  color: var(--r4-text-light);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.link-arrow svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/* ICON COLORS */
+.icon-teal { background: var(--r4-accent-teal-bg); color: var(--r4-accent-teal); }
+.icon-amber { background: var(--r4-accent-amber-bg); color: var(--r4-accent-amber); }
+.icon-blue { background: var(--r4-accent-blue-bg); color: var(--r4-accent-blue); }
+.icon-purple { background: var(--r4-accent-purple-bg); color: var(--r4-accent-purple); }
+.icon-green { background: var(--r4-accent-green-bg); color: var(--r4-accent-green); }
+
+.dot-teal { background: var(--r4-accent-teal); }
+.dot-amber { background: var(--r4-accent-amber); }
+.dot-blue { background: var(--r4-accent-blue); }
+.dot-purple { background: var(--r4-accent-purple); }
+.dot-green { background: var(--r4-accent-green); }
+
+/* BANNER */
+.prototype-banner {
+  background: var(--r4-dark);
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.prototype-banner span {
+  background: var(--r4-wine);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+
+/* FOOTER */
+.footer {
+  background: var(--r4-dark);
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding: 24px;
+  font-size: 12px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .header-nav { display: none; }
+  .header-top { padding: 0 16px; }
+  .page { padding: 20px 16px 60px; }
+  .page-title { font-size: 24px; }
+  .section-anchors { gap: 4px; }
+  .anchor-pill { font-size: 12px; padding: 6px 12px; }
+  .link-row { padding: 12px 16px; }
+}
+
+/* SMOOTH SCROLL */
+html { scroll-behavior: smooth; }
+
+/* SCROLL SPY OFFSET */
+.section-anchor-target {
+  scroll-margin-top: 120px;
+}
+</style>
+</head>
+<body>
+
+<div class="prototype-banner">
+  <span>PROTOTIPO</span>
+  Rediseño de la página "Tu perfil" — Nueva arquitectura de información
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div class="header-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="4" fill="rgba(255,255,255,0.15)"/>
+        <text x="6" y="19" font-family="Source Sans 3, sans-serif" font-weight="800" font-size="14" fill="white">R4</text>
+      </svg>
+      renta4banco
+    </div>
+    <nav class="header-nav">
+      <a href="#">Mi cuenta</a>
+      <a href="#">Carteras</a>
+      <a href="#">Fondos</a>
+      <a href="#">Bolsas</a>
+      <a href="#">Renta Fija</a>
+      <a href="#">Análisis</a>
+    </nav>
+    <div class="header-user">
+      <button class="btn-contract">Contratar</button>
+      <div class="header-user-avatar">JG</div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE CONTENT -->
+<main class="page">
+
+  <div class="page-header">
+    <div class="page-title">Tu perfil</div>
+    <div class="page-subtitle">Gestiona tus datos, seguridad, comunicaciones y herramientas de inversión</div>
+  </div>
+
+  <!-- SECTION ANCHORS -->
+  <nav class="section-anchors" id="anchors">
+    <a href="#datos" class="anchor-pill active" data-target="datos">Mis datos</a>
+    <a href="#regulatorio" class="anchor-pill" data-target="regulatorio">Regulatorio</a>
+    <a href="#seguridad" class="anchor-pill" data-target="seguridad">Seguridad</a>
+    <a href="#comunicaciones" class="anchor-pill" data-target="comunicaciones">Comunicaciones</a>
+    <a href="#herramientas" class="anchor-pill" data-target="herramientas">Herramientas</a>
+  </nav>
+
+  <!-- SECTION 1: MIS DATOS Y DOCUMENTOS -->
+  <div class="section section-anchor-target" id="datos">
+    <div class="section-header">
+      <div class="section-icon icon-teal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Mis datos y documentos</div>
+        <div class="section-description">Tu información personal, cuentas y documentación</div>
+      </div>
+    </div>
+    <div class="section-cards">
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-teal"></span>
+        <div class="link-content">
+          <div class="link-title">Datos personales</div>
+          <div class="link-desc">Consulta y modificación de datos personales y de contacto</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-teal"></span>
+        <div class="link-content">
+          <div class="link-title">Consultar IBAN y alias</div>
+          <div class="link-desc">IBAN de tus cuentas en Renta 4 y asociación de alias</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-teal"></span>
+        <div class="link-content">
+          <div class="link-title">Mis empresas</div>
+          <div class="link-desc">Accede a tus empresas y gestiona sus datos</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-teal"></span>
+        <div class="link-content">
+          <div class="link-title">Mis contratos y documentación</div>
+          <div class="link-desc">Estado de documentación contractual y solicitudes</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-teal"></span>
+        <div class="link-content">
+          <div class="link-title">Aportar documentación</div>
+          <div class="link-desc">Envío y actualización de DNIs, pasaportes y otra documentación</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTION 2: CUESTIONARIOS REGULATORIOS -->
+  <div class="section section-anchor-target" id="regulatorio">
+    <div class="section-header">
+      <div class="section-icon icon-purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 14l2 2 4-4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Cuestionarios regulatorios</div>
+        <div class="section-description">Tests y formularios requeridos por normativa financiera</div>
+      </div>
+    </div>
+    <div class="section-cards">
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-purple"></span>
+        <div class="link-content">
+          <div class="link-title">Estado de mis cuestionarios</div>
+          <div class="link-desc">Resumen del estado de todos tus formularios regulatorios</div>
+        </div>
+        <span class="link-badge badge-new">Nuevo</span>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-purple"></span>
+        <div class="link-content">
+          <div class="link-title">Formulario KYC</div>
+          <div class="link-desc">Información sobre actividad profesional, estudios e ingresos</div>
+        </div>
+        <span class="link-badge badge-complete">Completado</span>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-purple"></span>
+        <div class="link-content">
+          <div class="link-title">Clasificación cliente MiFID</div>
+          <div class="link-desc">Cuestionario que informa de tu clasificación MiFID</div>
+        </div>
+        <span class="link-badge badge-complete">Completado</span>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-purple"></span>
+        <div class="link-content">
+          <div class="link-title">Test de conveniencia</div>
+          <div class="link-desc">Evalúa tu conocimiento y experiencia en instrumentos financieros</div>
+        </div>
+        <span class="link-badge badge-pending">Pendiente</span>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-purple"></span>
+        <div class="link-content">
+          <div class="link-title">Test de idoneidad</div>
+          <div class="link-desc">Evalúa la idoneidad de las operaciones y recomendaciones</div>
+        </div>
+        <span class="link-badge badge-complete">Completado</span>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-purple"></span>
+        <div class="link-content">
+          <div class="link-title">Contratos MEFF</div>
+          <div class="link-desc">Documentación contractual para operar en el mercado MEFF</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTION 3: SEGURIDAD Y ACCESO -->
+  <div class="section section-anchor-target" id="seguridad">
+    <div class="section-header">
+      <div class="section-icon icon-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Seguridad y acceso</div>
+        <div class="section-description">Protege tu cuenta y gestiona cómo accedes</div>
+      </div>
+    </div>
+    <div class="section-cards">
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-blue"></span>
+        <div class="link-content">
+          <div class="link-title">Cambiar usuario</div>
+          <div class="link-desc">Cambio del usuario de acceso a la zona de registrados</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-blue"></span>
+        <div class="link-content">
+          <div class="link-title">Cambiar clave</div>
+          <div class="link-desc">Cambio de la contraseña o clave de acceso</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-blue"></span>
+        <div class="link-content">
+          <div class="link-title">Acceso con DNIe</div>
+          <div class="link-desc">Registro del DNI electrónico para acceder a la web</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-blue"></span>
+        <div class="link-content">
+          <div class="link-title">Doble nivel de seguridad</div>
+          <div class="link-desc">Nivel adicional con Google Authenticator</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTION 4: COMUNICACIONES Y PREFERENCIAS -->
+  <div class="section section-anchor-target" id="comunicaciones">
+    <div class="section-header">
+      <div class="section-icon icon-amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Comunicaciones y preferencias</div>
+        <div class="section-description">Decide qué te envía el banco y por qué canal</div>
+      </div>
+    </div>
+    <div class="section-cards">
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-amber"></span>
+        <div class="link-content">
+          <div class="link-title">Mis comunicaciones</div>
+          <div class="link-desc">Configuración por canal digital o correo postal</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-amber"></span>
+        <div class="link-content">
+          <div class="link-title">Gestión de consentimientos</div>
+          <div class="link-desc">Preferencias legales y comunicaciones comerciales</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-amber"></span>
+        <div class="link-content">
+          <div class="link-title">Buzón de avisos</div>
+          <div class="link-desc">Alertas, avisos y comunicaciones de tu cuenta</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-amber"></span>
+        <div class="link-content">
+          <div class="link-title">Configurar alertas</div>
+          <div class="link-desc">Alertas gratuitas vía email o SMS sobre cuenta, mercado y órdenes</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-amber"></span>
+        <div class="link-content">
+          <div class="link-title">Notificación y voto juntas de accionistas</div>
+          <div class="link-desc">Ejerce tus derechos en juntas de empresas de tu cartera</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTION 5: HERRAMIENTAS Y SERVICIOS DE INVERSIÓN -->
+  <div class="section section-anchor-target" id="herramientas">
+    <div class="section-header">
+      <div class="section-icon icon-green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Herramientas y servicios de inversión</div>
+        <div class="section-description">Configura las herramientas que usas para operar en mercados</div>
+      </div>
+    </div>
+    <div class="section-cards">
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-green"></span>
+        <div class="link-content">
+          <div class="link-title">Cotizaciones en tiempo real</div>
+          <div class="link-desc">Cotizaciones en streaming de los principales mercados</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-green"></span>
+        <div class="link-content">
+          <div class="link-title">Gráficos interactivos</div>
+          <div class="link-desc">Herramienta gráfica con 14 tipos de gráficos y más de 100 indicadores</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-green"></span>
+        <div class="link-content">
+          <div class="link-title">Terminal trader</div>
+          <div class="link-desc">Terminal financiero profesional con espacios de trabajo personalizados</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-green"></span>
+        <div class="link-content">
+          <div class="link-title">Liquidación multidivisa</div>
+          <div class="link-desc">Operaciones en monedas distintas del euro sin comisión extra</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+      <a class="link-row" href="#">
+        <span class="link-icon-dot dot-green"></span>
+        <div class="link-content">
+          <div class="link-title">Gestión de avisos por caída superior al 10%</div>
+          <div class="link-desc">Configura si quieres recibir notificaciones de depreciaciones en tus carteras</div>
+        </div>
+        <span class="link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  Renta 4 Banco S.A. 2026. Todos los derechos reservados — Prototipo de rediseño (no producción)
+</footer>
+
+<script>
+// Scroll spy for anchor pills
+const sections = document.querySelectorAll('.section-anchor-target');
+const pills = document.querySelectorAll('.anchor-pill');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      pills.forEach(p => p.classList.remove('active'));
+      const active = document.querySelector(`.anchor-pill[data-target="${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-120px 0px -60% 0px', threshold: 0.1 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
