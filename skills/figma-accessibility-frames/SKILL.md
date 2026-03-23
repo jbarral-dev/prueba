@@ -1,7 +1,70 @@
+---
+name: figma-accessibility-frames
+description: "Genera los 3 frames de accesibilidad en Figma para cualquier componente del Design System R4: Roles, Orden de lectura y Orden de foco. Usa esta skill cuando el usuario pida anotar accesibilidad de un componente, crear frames de accesibilidad, documentar roles ARIA, orden de foco o de lectura, o mencione 'accesibilidad', 'frames de accesibilidad', 'anotar roles', 'orden de foco' o 'orden de lectura' para un componente de Figma."
+---
+
 # Skill: figma-accessibility-frames
 
 ## Descripción
-Genera los 3 frames de accesibilidad en Figma para cualquier componente del Design System R4: **Roles**, **Orden de lectura** y **Orden de foco**. Usa los mismos componentes y estilos del kit de anotaciones del archivo `Renta 4 - Dashboard accesibilidad` (fileKey: `6LRhrm9IZCFtNc0sBDlUoD`).
+Genera los 3 frames de accesibilidad en Figma para cualquier componente del Design System R4: **Roles**, **Orden de lectura por agrupación** y **Orden de foco por teclado**. Usa los mismos componentes y estilos del kit de anotaciones del archivo `Renta 4 - Dashboard accesibilidad` (fileKey: `6LRhrm9IZCFtNc0sBDlUoD`).
+
+---
+
+## ⚠️ REGLAS OBLIGATORIAS — Leer antes de ejecutar
+
+1. **NUNCA crear una página nueva.** Los frames de accesibilidad se añaden SIEMPRE a la **misma página** donde ya existe el componente en Figma. Usar `figma.currentPage` del Desktop Bridge, NO `figma.createPage()`.
+
+2. **Referencia visual exacta obligatoria.** Antes de generar los frames, inspeccionar el ejemplo de referencia en el mismo archivo:
+   - **Componente de referencia**: R4InputIcon
+   - **nodeId de referencia**: `6555-4320`
+   - **Archivo**: `LXKe53jePjDEAVhdYCU4ed` (R4 Design System | Primitivos | 1.2)
+   - Los 3 frames generados deben tener exactamente la misma estructura visual que este ejemplo.
+
+3. **Solo 3 frames, exactamente estos:**
+   - `Roles`
+   - `Orden de lectura por agrupación`
+   - `Orden de foco por teclado`
+   No generar documentación adicional (checklists WCAG, tablas de contraste, etc.).
+
+4. **Herramienta de ejecución**: Usar `figma_execute` (Desktop Bridge plugin), **no** la Figma REST API.
+
+5. **Posición**: Los 3 frames se colocan **debajo** del componente principal, en fila horizontal, en la **misma sección/canvas** donde vive el componente.
+
+---
+
+## Proceso de ejecución paso a paso
+
+### Paso 1 — Inspeccionar el componente objetivo
+```
+- Obtener nodeId del componente a documentar
+- Usar figma_get_figma_data para obtener estructura, posición (x, y), dimensiones
+- Identificar: tipo de componente, sub-elementos, variantes, elementos interactivos
+```
+
+### Paso 2 — Inspeccionar la referencia visual
+```
+- Obtener nodeId 6555-4320 del mismo archivo (R4InputIcon)
+- Examinar la estructura exacta de sus 3 frames de accesibilidad
+- Reproducir el mismo estilo visual para el componente nuevo
+```
+
+### Paso 3 — Obtener posición del componente en la página
+```javascript
+// Ejecutar en figma_execute para obtener posición real del componente
+const node = figma.getNodeById('NODE_ID_DEL_COMPONENTE');
+const parent = node.parent;
+return {
+  x: node.absoluteBoundingBox?.x ?? node.x,
+  y: node.absoluteBoundingBox?.y ?? node.y,
+  w: node.width,
+  h: node.height,
+  parentId: parent?.id,
+  parentType: parent?.type
+};
+```
+
+### Paso 4 — Crear los 3 frames con figma_execute
+Usar `await figma.setCurrentPageAsync(page)` — NUNCA `figma.currentPage = page`.
 
 ---
 
@@ -13,75 +76,59 @@ Genera los 3 frames de accesibilidad en Figma para cualquier componente del Desi
 
 ### Componentes disponibles para anotaciones
 
-#### `elements` (ComponentSet `16425:3401` en Design System / `44:5384` en Dashboard)
-Callouts/etiquetas con flecha. Cada variante combina:
+#### `elements` (ComponentSet `16425:3401`)
+Callouts/etiquetas con flecha. Variantes:
 - **Heading Level**: `p`, `dt`, `dd`, `dl`, `li`, `ul`, `ol`
-- **Callout Direction**: `Down`, `Up`, `Left`, `Right`, `---` (sin flecha, solo target area)
+- **Callout Direction**: `Down`, `Up`, `Left`, `Right`, `---`
 - **target area**: `true` | `false`
 
-Colores de badge según tipo semántico:
-- `dt` → `Soporte/alert/base` (#FA9902, fondo naranja oscuro) + texto blanco
-- `dd` → `Soporte/alert/light` (naranja claro) + texto negro
-- `p` → `Soporte/info/base` (#FA9902) + texto negro (o según variante)
-- Role badges → `Soporte/info/dark` (#C97A00) + texto blanco
-- ARIA badges → `Gráficas/2` (#AA3C2B, rojo-marrón) + texto blanco
+Colores según tipo semántico:
+- `dt` → `#FA9902` (naranja) + texto blanco
+- `dd` → naranja claro + texto negro
+- `p` → `#FA9902` + texto negro
+- Role badges → `#C97A00` (marrón-naranja) + texto blanco
+- ARIA badges → `#AA3C2B` (rojo-marrón) + texto blanco
 
 #### `role` (ComponentSet `16425:3473`)
-Badge para anotar `role=` de ARIA. Variantes: `group`, `region`, `form`, `listbox`, `option`, `button`, `dialog`, `alert`, `status`, `navigation`, `main`, `banner`, `contentinfo`, `search`, etc.
+Badge para `role=` ARIA. Variantes: `group`, `region`, `form`, `listbox`, `option`, `button`, `dialog`, `alert`, `status`, `navigation`, `main`, `banner`, `contentinfo`, `search`, etc.
 
 #### `ARIA` (ComponentSet `16425:3489`)
-Badge para atributos ARIA. Variantes:
-- `Link target=aria-label`
-- `Link target=aria-live`
-- `Link target=aria-labelledby`
-- `Link target=aria-describedby`
-- `Link target=aria-required`
-- `Link target=aria-invalid`
-- `Link target=aria-expanded`
-- `Link target=aria-controls`
-- `Link target=aria-haspopup`
-- `Link target=aria-hidden`
-- `Link target=aria-disabled`
-- `Link target=aria-checked`
-- `Link target=aria-selected`
-- `Link target=aria-current`
-- `Link target=aria-atomic`
-- `Link target=aria-relevant`
+Badge para atributos ARIA. Variantes: `aria-label`, `aria-live`, `aria-labelledby`, `aria-describedby`, `aria-required`, `aria-invalid`, `aria-expanded`, `aria-controls`, `aria-haspopup`, `aria-hidden`, `aria-disabled`, `aria-checked`, `aria-selected`, `aria-current`, `aria-atomic`, `aria-relevant`.
 
-#### `_pointer` (ComponentSet `16425:3379` / `44:5512`)
+#### `_pointer` (ComponentSet `16425:3379`)
 Flechas sueltas: `point=down`, `point=up`, `point=left`, `point=right`
 
 ---
 
-## Estructura de los 3 frames de accesibilidad
+## Estructura visual de los 3 frames
 
-Los 3 frames se posicionan **debajo** del frame principal del componente, en la misma página, **alineados a la derecha** del panel de definición del componente o **en fila horizontal** con un gap de `128px` entre ellos.
-
-### Dimensiones y layout de los frames contenedores
-
-Cada frame sigue este patrón (basado en el ejemplo del Input OTP node `16425:3884`):
+### Layout de cada frame
 ```
-Frame principal (Roles / Orden de lectura / Orden de foco):
-  - layout: ROW, gap: 128px, sizing: fixed width / hug height
-  - width: ~844px (ajustar según tamaño del componente)
-  
-  └── Specification (FRAME)
-        - layout: COLUMN, gap: 48px, sizing: fill / fixed
-        
-        ├── Name (FRAME - badge título del frame)
-        │     - fills: #FFFFFF (blanco)
-        │     - borderRadius: 24px
-        │     - padding: 64px
-        │     └── TEXT: "Roles" / "Orden de lectura" / "Orden de foco"
-        │           - fontFamily: Inter, fontWeight: 700, fontSize: 64
-        
-        └── Anatomy (FRAME - zona de anotaciones)
-              - fills: #FFFFFF
-              - borderRadius: 24px
-              - padding: 80px (todos lados) o 80px 270px (izq/der)
-              - layout: COLUMN, gap: 94px
-              
-              └── [Instancias del componente + callouts posicionados en absolute]
+Frame contenedor (e.g. "ButtonCircle / Accesibilidad / Roles"):
+  - layout: COLUMN, gap: 48px
+  - padding: 64px
+  - fill: #F5F5F5 (gris muy claro) o según referencia visual R4InputIcon
+  - borderRadius: 24px
+  - sizing: hug width y hug height
+
+  ├── Name (badge-título del frame)
+  │     - TEXT: "Roles" / "Orden de lectura por agrupación" / "Orden de foco por teclado"
+  │     - fontFamily: Inter, fontWeight: 700, fontSize: 40-64px
+  │     - fill: blanco, borderRadius: 16px, padding: 32px 48px
+  │
+  └── Anatomy (zona de anotaciones)
+        - fill: #FFFFFF
+        - borderRadius: 24px
+        - padding: 80px
+        - Posicionamiento ABSOLUTO de callouts sobre instancia del componente
+```
+
+Los 3 frames se posicionan en fila horizontal con gap de `128px` entre ellos, **debajo** del frame principal del componente:
+```
+Y_frames = componentY + componentHeight + 100
+X_frame1 = componentX                         (Roles)
+X_frame2 = componentX + frameWidth + 128      (Orden de lectura)
+X_frame3 = componentX + (frameWidth+128)*2    (Orden de foco)
 ```
 
 ---
@@ -89,226 +136,79 @@ Frame principal (Roles / Orden de lectura / Orden de foco):
 ## Frame 1: ROLES
 
 ### Propósito
-Mostrar el etiquetado HTML semántico: qué elemento HTML corresponde a cada parte del componente, y los atributos `role=` y `aria-*` que se aplican.
+Mostrar el etiquetado HTML semántico y los atributos `role=` / `aria-*` de cada parte del componente.
 
-### Qué incluir
-1. **Instancia del componente** — mostrar 2-3 variantes del componente si tiene estados relevantes (Default, Error, etc.)
-2. **Callouts de elemento HTML** (`elements`) — apuntando a cada parte del componente con el nivel semántico:
-   - Contenedor principal → `p` o `section` o `form` según corresponda
-   - Labels → `p` (párrafo normal)
-   - Inputs → `dt` (término de definición) indicando el tipo de campo
-   - Captions/helper text → `dd` (descripción de definición)
-3. **Badges `role=`** — posicionados con flecha hacia el elemento que recibe ese role
-4. **Badges `ARIA`** — posicionados con flecha hacia el elemento que recibe el atributo
+### Contenido
+1. **1-2 instancias del componente** (Default y opcionalmente Focused/Error)
+2. **Callouts `elements`** apuntando a cada sub-elemento con su etiqueta HTML (`p`, `dt`, `dd`, etc.)
+3. **Badges `role=`** apuntando al elemento que recibe ese role
+4. **Badges `aria-*`** apuntando al elemento con ese atributo
 
-### Reglas de inferencia de roles por tipo de componente
+### Reglas de roles por tipo de componente
 
-| Tipo de componente | Role HTML | aria-* relevantes |
+| Componente | HTML/Role | aria-* relevantes |
 |---|---|---|
-| Botón de acción | `<button>` | `aria-label` (si solo icono), `aria-disabled`, `aria-pressed` (toggle) |
-| Input de texto | `<input type="text">` | `aria-label` o `aria-labelledby`, `aria-required`, `aria-invalid`, `aria-describedby` |
-| Input OTP | `<group>` contenedor + `<input>` × N | `role="group"`, `aria-label="Dígito X de N"`, `aria-live="polite"` (countdown), `aria-labelledby` |
-| Select / Dropdown | `<select>` o `role="listbox"` | `aria-label`, `aria-expanded`, `aria-haspopup`, `aria-controls` |
-| Checkbox | `<input type="checkbox">` | `aria-checked`, `aria-label`, `aria-required` |
-| Radio button | `<input type="radio">` | `role="radiogroup"` (contenedor), `aria-checked`, `aria-label` |
-| Modal / Dialog | `role="dialog"` | `aria-modal="true"`, `aria-labelledby`, `aria-describedby` |
-| Alert / Toast | `role="alert"` o `role="status"` | `aria-live="assertive"` (alert) / `aria-live="polite"` (status) |
-| Navegación | `<nav>` | `aria-label` (si hay varias navs) |
-| Lista | `<ul>` / `<ol>` | — |
-| Item de lista | `<li>` | — |
-| Tab panel | `role="tablist"` / `role="tab"` / `role="tabpanel"` | `aria-selected`, `aria-controls`, `aria-labelledby` |
-| Accordion | `<button>` en header | `aria-expanded`, `aria-controls` |
-| Tooltip | `role="tooltip"` | `aria-describedby` en el trigger |
-| Breadcrumb | `<nav aria-label="breadcrumb">` | `aria-current="page"` en el último item |
-| Badge / Tag | `<span>` | `aria-label` si solo visual |
+| Botón de acción (solo icono) | `<button>` | `aria-label` (obligatorio), `aria-disabled` |
+| Botón con texto visible | `<button>` | `aria-disabled` |
+| Input texto | `<input type="text">` | `aria-label`/`aria-labelledby`, `aria-required`, `aria-invalid`, `aria-describedby` |
+| Select | `role="listbox"` o `<select>` | `aria-expanded`, `aria-haspopup`, `aria-controls` |
+| Checkbox | `<input type="checkbox">` | `aria-checked`, `aria-label` |
 | Icono decorativo | `<svg aria-hidden="true">` | `aria-hidden="true"` |
+| Grupo de campos | `<fieldset>` / `role="group"` | `aria-labelledby` |
 
-### Valores de los callout text
-- El texto del badge debe ser el **valor exacto del atributo**, por ejemplo:
-  - `role="group"` 
-  - `aria-label="Dígito 1 de 6"`
-  - `aria-live="polite"`
-  - `aria-labelledby="id-label id-hint"`
-  - `p` (para indicar elemento `<p>`)
-  - `dt` (para indicar elemento de definición)
+**Para ButtonCircle específicamente:**
+- Contenedor: `<button>` con `role="button"` implícito
+- Icono SVG: `aria-hidden="true"` (decorativo, el texto label lo describe)
+- `aria-label="Pedir cita"` (necesario porque el label visual podría no bastar)
+- `aria-disabled="true/false"` en estado Disabled
 
 ---
 
-## Frame 2: ORDEN DE LECTURA
+## Frame 2: ORDEN DE LECTURA POR AGRUPACIÓN
 
 ### Propósito
-Mostrar el orden en que un lector de pantalla recorre los elementos del componente. Organiza los elementos en bloques lógicos secuenciales.
+Mostrar el orden en que un lector de pantalla recorre los elementos del componente, organizando por grupos lógicos.
 
-### Qué incluir
+### Contenido
 1. **Instancia del componente** (estado Default)
-2. **Overlays/bloques numerados** — rectángulos translúcidos o contornos con números (1, 2, 3...) posicionados sobre cada zona del componente que será leída
-3. **Callouts `dl`/`dt`/`dd`** — mostrando el orden y agrupación
+2. **Bloques numerados** (rectángulos o badges con números 1, 2, 3…) sobre cada zona del componente que será leída
+3. **Callouts `dl`/`dt`/`dd`** describiendo qué se lee en cada grupo
 
-### Convención visual
-- Cada bloque de lectura se anota con un número o descripción de qué se lee:
-  - `1` → Label del componente
-  - `2` → Campo/Input principal  
-  - `3` → Helper text / caption
-  - `4` → Error message (si hay)
-- El orden sigue la secuencia DOM natural: de arriba a abajo, de izquierda a derecha
-- Para componentes OTP con 6 dígitos: cada dígito individual es un punto de lectura (`Dígito 1 de 6`, `Dígito 2 de 6`...)
-- Los mensajes `aria-live` (contadores, errores) se anotan indicando cuándo se leen (asíncrono)
+### Convención
+- El orden sigue la secuencia DOM: arriba → abajo, izquierda → derecha
+- Numerar solo los bloques de contenido significativo (no elementos `aria-hidden`)
+- Indicar textos `aria-live` con nota "(leído asíncronamente)"
 
-### Reglas por tipo de componente
-| Componente | Orden de lectura |
-|---|---|
-| Input texto | Label → Input (con placeholder) → Helper text → Error |
-| Input OTP | Label/instrucción → Dígito 1 → Dígito 2 → ... → Dígito N → Caption/Error |
-| Botón | Texto del botón (+ "botón" anunciado por el AT) |
-| Checkbox | Checkbox (estado) + Label texto |
-| Select | Label → Trigger → [Opciones cuando abierto] |
-| Modal | Heading del modal → Contenido → Acciones |
-| Alert | Mensaje completo (leído inmediatamente por aria-live) |
+### Orden para ButtonCircle
+```
+1 → Icono (aria-hidden="true", NO leído) — señalar con "aria-hidden"
+2 → Label "Pedir cita" + anuncio del rol "botón"
+[Si disabled] → "No disponible" (aria-disabled)
+```
 
 ---
 
-## Frame 3: ORDEN DE FOCO
+## Frame 3: ORDEN DE FOCO POR TECLADO
 
 ### Propósito
-Mostrar el orden en que el foco del teclado recorre los elementos interactivos del componente al usar Tab / Shift+Tab.
+Mostrar el orden en que el foco del teclado (Tab / Shift+Tab) recorre los elementos interactivos del componente.
 
-### Qué incluir
-1. **Instancia del componente** (estado Default o con foco visible)
-2. **Numeración del orden de foco** — badges numerados (1, 2, 3...) indicando qué elemento recibe foco primero, segundo, etc.
-3. **Indicador visual de foco** — mostrar el anillo de foco (outline azul de 3px) sobre el elemento que tiene foco en ese momento
-4. **Callout de tecla** — opcionalmente indicar qué tecla activa o interactúa con ese elemento
+### Contenido
+1. **Instancia del componente** (estado Focused si existe, o Default)
+2. **Badges numéricos** (1, 2, 3…) sobre cada elemento que recibe foco
+3. **Anillo de foco visual** sobre el elemento activo
+4. **Indicadores de tecla** (Tab, Space, Enter) opcionales
 
-### Convención visual
-- Solo los **elementos interactivos** aparecen en el orden de foco (no los textos estáticos ni labels no focusables)
-- Números en badges circulares o cuadrados ordenados secuencialmente
-- El anillo de foco estándar del DS es: outline de 3px, color `#2B7FFF` (azul), offset 2px
+### Convención
+- Solo elementos **interactivos** aparecen (no textos estáticos, no `aria-hidden`)
+- Los elementos `Disabled` NO aparecen en el orden de foco (tabindex="-1")
+- El anillo de foco del DS: outline 3px, color `#2B7FFF`, offset 2px
 
-### Reglas por tipo de componente
-| Componente | Elementos focusables | Orden |
-|---|---|---|
-| Input texto | El propio input | 1 |
-| Input OTP | Cada input dígito | 1 → 2 → ... → N |
-| Botón | El propio botón | 1 |
-| Checkbox | El propio checkbox | 1 |
-| Select cerrado | El trigger | 1 |
-| Select abierto | Trigger → Opciones | 1 → 2 → ... |
-| Modal | [Primer elemento interactivo] → ... → [Botón cerrar] → [Loop al inicio] | 1 → 2 → ... → trap focus |
-| Accordion | Header/botón de cada item | 1 → 2 → ... |
-| Tab | Cada tab item | 1 → 2 → ... (luego Tab va al tabpanel) |
-
----
-
-## Proceso paso a paso para generar los frames
-
-### 1. Obtener datos del componente
+### Orden para ButtonCircle
 ```
-1. Leer el nodeId del componente objetivo en Figma
-2. Obtener su estructura con figma:get_figma_data
-3. Identificar:
-   - Tipo de componente (button, input, select, etc.)
-   - Sub-elementos y su jerarquía
-   - Variantes disponibles
-   - Posición (x, y) del frame principal para posicionar los nuevos frames debajo
-```
-
-### 2. Crear los frames en Figma via API REST
-Usar el endpoint POST de la Figma API para crear nodos. Los frames de accesibilidad se añaden como **children del mismo parent frame** que el componente original, posicionados debajo.
-
-#### Posición de los frames
-```
-componentY + componentHeight + 100  → Y de inicio de los frames de accesibilidad
-componentX                          → X del primer frame (Roles)
-componentX + frameWidth + 128       → X del segundo frame (Orden lectura)
-componentX + (frameWidth + 128) * 2 → X del tercer frame (Orden foco)
-```
-
-### 3. Estructura JSON para crear un frame vía Figma API
-
-```json
-{
-  "type": "FRAME",
-  "name": "Roles",
-  "x": [calculado],
-  "y": [calculado],
-  "width": 844,
-  "height": 600,
-  "fills": [{"type": "SOLID", "color": {"r": 1, "g": 1, "b": 1, "a": 1}}],
-  "children": [
-    {
-      "type": "FRAME",
-      "name": "Name",
-      "fills": [{"type": "SOLID", "color": {"r": 1, "g": 1, "b": 1, "a": 1}}],
-      "cornerRadius": 24,
-      "children": [
-        {
-          "type": "TEXT",
-          "characters": "Roles",
-          "style": {"fontFamily": "Inter", "fontWeight": 700, "fontSize": 64}
-        }
-      ]
-    },
-    {
-      "type": "FRAME",
-      "name": "Anatomy",
-      "fills": [{"type": "SOLID", "color": {"r": 1, "g": 1, "b": 1, "a": 1}}],
-      "cornerRadius": 24,
-      "children": [
-        // Instancia del componente
-        // Callouts/badges posicionados en absolute
-      ]
-    }
-  ]
-}
-```
-
-### 4. Instanciar el componente dentro del frame Anatomy
-```json
-{
-  "type": "INSTANCE",
-  "componentId": "[id del componente a documentar]",
-  "x": 80,
-  "y": 80
-}
-```
-
-### 5. Añadir callouts/badges
-
-Para cada anotación, instanciar el componente correcto del kit:
-
-**Badge de rol HTML (elemento como `dt`, `p`, etc.)**:
-```json
-{
-  "type": "INSTANCE",
-  "componentId": "[id de la variante correcta de 'elements']",
-  "x": [posición relativa al elemento anotado],
-  "y": [posición relativa al elemento anotado]
-}
-```
-
-**Badge `role=`**:
-```json
-{
-  "type": "INSTANCE", 
-  "componentId": "16425:3480",
-  "x": [x],
-  "y": [y],
-  "componentProperties": {
-    "role": {"value": "group", "type": "VARIANT"}
-  }
-}
-```
-
-**Badge `aria-*`**:
-```json
-{
-  "type": "INSTANCE",
-  "componentId": "16425:3490",
-  "x": [x],
-  "y": [y],
-  "componentProperties": {
-    "Link target": {"value": "aria-label", "type": "VARIANT"}
-  }
-}
+Foco 1 → El botón completo (Tab)
+         → Enter / Space: activa la acción
+         → Disabled: omitido del tab order (tabindex="-1")
 ```
 
 ---
@@ -317,104 +217,70 @@ Para cada anotación, instanciar el componente correcto del kit:
 
 ```
 [NombreComponente] / Accesibilidad / Roles
-[NombreComponente] / Accesibilidad / Orden de lectura
-[NombreComponente] / Accesibilidad / Orden de foco
+[NombreComponente] / Accesibilidad / Orden de lectura por agrupación
+[NombreComponente] / Accesibilidad / Orden de foco por teclado
 ```
 
 Ejemplos:
-- `R4InputOTP / Accesibilidad / Roles`
-- `R4Button / Accesibilidad / Orden de foco`
-- `R4Select / Accesibilidad / Orden de lectura`
+- `ButtonCircle / Accesibilidad / Roles`
+- `ButtonCircle / Accesibilidad / Orden de lectura por agrupación`
+- `ButtonCircle / Accesibilidad / Orden de foco por teclado`
 
 ---
 
-## Ejemplo concreto: Input OTP
+## Ejemplo concreto: ButtonCircle
 
-### Roles frame — anotaciones aplicadas
-El Input OTP (`R4InputOTP`, node `16425:3210`) tiene:
-
+### Roles
 ```
-Estructura HTML semántica:
-<section aria-labelledby="id-otp-label">     ← p + aria-labelledby="id1 id2"
-  <p id="id-otp-label">                      ← Texto instrucción (aria-live="polite" si hay countdown)
-    El código enviado al teléfono...
-  </p>
-  <div role="group"                           ← role="group"
-       aria-label="Código OTP">
-    <input aria-label="Dígito 1 de 6" />     ← aria-label="Dígito X de 6" × 6
-    <input aria-label="Dígito 2 de 6" />
-    ...
-    <input aria-label="Dígito 6 de 6" />
-  </div>
-  <span aria-live="polite">                  ← aria-live="polite" (countdown)
-    Caduca en 1:30 minutos
-  </span>
-</section>
+<button aria-label="Pedir cita" aria-disabled="false">
+  <svg aria-hidden="true"><!-- calendar icon --></svg>
+  <span>Pedir cita</span>   ← text visible
+</button>
+```
+Callouts:
+1. Badge `button` → sobre el contenedor del componente
+2. Badge `aria-label="Pedir cita"` → sobre el icono/componente
+3. Badge `aria-hidden="true"` → sobre el SVG del icono
+4. Badge `aria-disabled` → sobre la variante Disabled
+
+### Orden de lectura
+```
+1. [aria-hidden] Icono — NO leído
+2. "Pedir cita, botón" — texto + rol anunciado por el AT
 ```
 
-Callouts visibles en el frame Roles:
-1. Badge `p` apuntando al texto de instrucción (flecha izquierda)
-2. Badge `role="group"` apuntando al contenedor de inputs (flecha izquierda)  
-3. Badge `aria-label="Dígito X de 6"` apuntando a cualquiera de los inputs (flecha arriba)
-4. Badge `aria-labelledby="id1 id2"` apuntando al input group (flecha derecha)
-5. Badge `aria-live="polite"` apuntando al caption de countdown (flecha arriba)
-6. Badge `aria-live="assertive"` apuntando al caption de error (flecha arriba)
-
-### Orden de lectura — secuencia
+### Orden de foco
 ```
-1. "El código enviado al teléfono *****5151 caduca a los 2 minutos."
-2. "Dígito 1 de 6" [input]
-3. "Dígito 2 de 6" [input]
-4. "Dígito 3 de 6" [input]
-5. "Dígito 4 de 6" [input]
-6. "Dígito 5 de 6" [input]
-7. "Dígito 6 de 6" [input]
-8. [Si countdown activo] "Caduca en X:XX minutos" (aria-live, leído asíncronamente)
-9. [Si error] "Código incorrecto o caducado" (aria-live="assertive", interrupción inmediata)
-```
-
-### Orden de foco — elementos focusables
-```
-Foco 1 → Input dígito 1 (Tab)
-Foco 2 → Input dígito 2 (Tab o auto-avance al escribir)
-Foco 3 → Input dígito 3
-Foco 4 → Input dígito 4
-Foco 5 → Input dígito 5
-Foco 6 → Input dígito 6
-[Botón "Reenviar código" si visible]
+Foco 1 → Botón completo (Tab)
+         → Activar: Space / Enter
+         → Disabled: tabindex="-1", omitido
 ```
 
 ---
 
-## Colores y estilos visuales del kit
+## Colores y estilos del kit de anotaciones
 
-| Token | Color hex | Uso |
+| Token | Color | Uso |
 |---|---|---|
-| `Soporte/alert/base` | `#FA9902` | Badge naranja para `dt` (término) |
-| `Soporte/alert/light` | ~`#FEE685` | Badge amarillo claro para `dd` (descripción) |
-| `Soporte/info/base` | `#FA9902` | Badge naranja para `p` (párrafo) |
-| `Soporte/info/dark` | `#C97A00` | Badge marrón-naranja para `role=` |
-| `Gráficas/2` | `#AA3C2B` | Badge rojo-marrón para `aria-*` |
-| `Fondo/white` | `#FFFFFF` | Texto sobre badges oscuros |
-| `Contenido/black` | `#1F2331` | Texto sobre badges claros |
-| `#2B7FFF` | azul | Anillo de foco (3px outline) |
+| `Soporte/alert/base` | `#FA9902` | Badge `dt` |
+| `Soporte/alert/light` | `#FEE685` | Badge `dd` |
+| `Soporte/info/base` | `#FA9902` | Badge `p` |
+| `Soporte/info/dark` | `#C97A00` | Badge `role=` |
+| `Gráficas/2` | `#AA3C2B` | Badge `aria-*` |
+| Fondo frames | `#F5F5F5` | Background de cada frame |
+| Anatomy fill | `#FFFFFF` | Zona de anotaciones |
+| Anillo foco | `#2B7FFF` | Outline 3px del foco |
 
-Tipografía de badges:
-- fontFamily: `Open Sans`
-- fontWeight: `700`
-- fontSize: `14`
-- lineHeight: `1.43em`
+Tipografía de badges: Open Sans, 700, 14px.
 
 ---
 
-## Checklist de calidad antes de entregar
+## Checklist antes de entregar
 
-- [ ] Los 3 frames están presentes: Roles, Orden de lectura, Orden de foco
-- [ ] Cada frame tiene el nombre correcto con la convención `[Componente] / Accesibilidad / [Tipo]`
-- [ ] Los callouts usan los componentes correctos del kit de anotaciones
-- [ ] Los valores de `aria-label` son descriptivos y específicos (no genéricos)
-- [ ] El orden de lectura es coherente con la estructura DOM del componente
-- [ ] Solo los elementos interactivos aparecen en el orden de foco
-- [ ] Se han incluido los estados relevantes (Default + Error mínimo)
-- [ ] Los frames están posicionados debajo/al lado del componente original, no encima
-- [ ] Los textos de los badges son en minúsculas cuando corresponde (ej: `role="group"` no `Role="Group"`)
+- [ ] Los 3 frames están en la **misma página** que el componente (nunca página nueva)
+- [ ] Los nombres siguen la convención `[Componente] / Accesibilidad / [Tipo]`
+- [ ] Los 3 frames se inspeccionaron contra el ejemplo R4InputIcon (`6555-4320`)
+- [ ] Frame Roles: incluye `button`, `aria-label`, `aria-hidden` en el icono, `aria-disabled`
+- [ ] Frame Lectura: orden correcto, icono marcado como `aria-hidden`
+- [ ] Frame Foco: solo el botón activo (Disabled excluido), anillo de foco visible
+- [ ] Los textos de badges son exactos: `role="button"`, `aria-label="Pedir cita"`, etc.
