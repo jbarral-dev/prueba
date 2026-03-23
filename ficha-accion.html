@@ -431,6 +431,9 @@
       cursor: pointer;
     }
 
+    /* Bottom Sheet — oculto en desktop */
+    .bs-overlay, .bs-sheet { display: none; }
+
     /* ═══════════════════════════════════════
        RESPONSIVE — ≤767px (Mobile / Tablet)
        ═══════════════════════════════════════ */
@@ -516,6 +519,56 @@
       /* Show button dock */
       .button-dock { display: flex; }
       .mobile-only  { display: flex; }
+
+      /* ── Bottom Sheet ── */
+      .bs-overlay {
+        display: block;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 400;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .bs-overlay.bs-open { opacity: 1; pointer-events: all; }
+      .bs-sheet {
+        display: block;
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0px -8px 24px 0px rgba(0,0,0,0.2);
+        z-index: 401;
+        transform: translateY(100%);
+        transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+        max-height: 80vh; overflow-y: auto;
+      }
+      .bs-sheet.bs-open { transform: translateY(0); }
+      .bs-drag { width: 40px; height: 4px; background: #E0E0E0; border-radius: 2px; margin: 12px auto 4px; }
+      .bs-header {
+        display: flex; justify-content: space-between; align-items: center;
+        gap: 8px; padding: 16px 8px 16px 16px;
+      }
+      .bs-title {
+        font-family: 'Exo 2', sans-serif; font-weight: 700;
+        font-size: 20px; line-height: 1.2em; color: #0B0B0B;
+      }
+      .bs-close {
+        width: 40px; height: 40px; border-radius: 100px;
+        background: none; border: none; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      .bs-content { padding: 0 0 32px; }
+      .bs-list { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
+      .bs-item {
+        display: flex; align-items: center; gap: 8px;
+        padding: 4px 8px; border-radius: 4px; cursor: pointer;
+      }
+      .bs-item.bs-active { background: #FCFCFC; }
+      .bs-item-label {
+        font-family: 'Open Sans', sans-serif; font-weight: 400;
+        font-size: 16px; line-height: 1.5em; color: #0B0B0B; flex: 1;
+      }
+      .bs-item-check { flex-shrink: 0; }
+      .bs-item:not(.bs-active) .bs-item-check { display: none; }
     }
   </style>
 </head>
@@ -817,13 +870,46 @@
 
 <script>
 (function () {
-  const trigger = document.getElementById('dropdown-trigger');
-  const popover = document.getElementById('popover-values');
-  const label   = document.getElementById('dropdown-label');
+  const trigger    = document.getElementById('dropdown-trigger');
+  const popover    = document.getElementById('popover-values');
+  const label      = document.getElementById('dropdown-label');
+  const bsOverlay  = document.getElementById('bs-overlay');
+  const bsSheet    = document.getElementById('bs-sheet');
+  const bsClose    = document.getElementById('bs-close');
 
-  /* Toggle popover al hacer click en el pill */
+  function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
+
+  function openBS() {
+    bsOverlay.classList.add('bs-open');
+    bsSheet.classList.add('bs-open');
+  }
+  function closeBS() {
+    bsOverlay.classList.remove('bs-open');
+    bsSheet.classList.remove('bs-open');
+  }
+
+  bsClose.addEventListener('click', closeBS);
+  bsOverlay.addEventListener('click', closeBS);
+
+  bsSheet.querySelectorAll('.bs-item').forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (item.dataset.href) { window.location.href = item.dataset.href; return; }
+      bsSheet.querySelectorAll('.bs-item').forEach(function (i) {
+        i.classList.remove('bs-active');
+        i.setAttribute('aria-selected', 'false');
+      });
+      item.classList.add('bs-active');
+      item.setAttribute('aria-selected', 'true');
+      label.textContent = item.dataset.value;
+      closeBS();
+    });
+  });
+
+  /* Toggle: mobile → bottom sheet | desktop → popover */
   trigger.addEventListener('click', function (e) {
     e.stopPropagation();
+    if (isMobile()) { openBS(); return; }
     const isOpen = popover.classList.toggle('open');
     trigger.classList.toggle('open', isOpen);
     trigger.setAttribute('aria-expanded', isOpen);
@@ -897,6 +983,54 @@
     </svg>
     Contratar
   </button>
+</div>
+
+<!-- ═══ BOTTOM SHEET (mobile) ═══ -->
+<div class="bs-overlay" id="bs-overlay"></div>
+<div class="bs-sheet" id="bs-sheet" role="dialog" aria-modal="true" aria-labelledby="bs-title">
+  <div class="bs-drag"></div>
+  <div class="bs-header">
+    <span class="bs-title" id="bs-title">Productos de Telefónica</span>
+    <button class="bs-close" id="bs-close" aria-label="Cerrar">
+      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15">
+        <path d="M1 1L14 14M14 1L1 14" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="bs-content">
+    <div class="bs-list" role="listbox">
+      <div class="bs-item bs-active" data-value="Acción" role="option" aria-selected="true">
+        <span class="bs-item-label">Acción</span>
+        <svg class="bs-item-check" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="11">
+          <path d="M1 5.5L5 9.5L13 1" stroke="#0B0B0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="bs-item" data-value="CFDs" data-href="ficha-cfd.html" role="option" aria-selected="false">
+        <span class="bs-item-label">CFDs</span>
+        <svg class="bs-item-check" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="11">
+          <path d="M1 5.5L5 9.5L13 1" stroke="#0B0B0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="bs-item" data-value="Futuros" role="option" aria-selected="false">
+        <span class="bs-item-label">Futuros</span>
+        <svg class="bs-item-check" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="11">
+          <path d="M1 5.5L5 9.5L13 1" stroke="#0B0B0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="bs-item" data-value="Opciones" role="option" aria-selected="false">
+        <span class="bs-item-label">Opciones</span>
+        <svg class="bs-item-check" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="11">
+          <path d="M1 5.5L5 9.5L13 1" stroke="#0B0B0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="bs-item" data-value="Warrants" role="option" aria-selected="false">
+        <span class="bs-item-label">Warrants</span>
+        <svg class="bs-item-check" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="11">
+          <path d="M1 5.5L5 9.5L13 1" stroke="#0B0B0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>
