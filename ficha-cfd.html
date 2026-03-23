@@ -899,102 +899,6 @@
   </div>
 </div>
 
-<script>
-(function () {
-  const trigger    = document.getElementById('dropdown-trigger');
-  const popover    = document.getElementById('popover-values');
-  const label      = document.getElementById('dropdown-label');
-  const bsOverlay  = document.getElementById('bs-overlay');
-  const bsSheet    = document.getElementById('bs-sheet');
-  const bsClose    = document.getElementById('bs-close');
-
-  function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
-
-  function openBS() {
-    bsOverlay.classList.add('bs-open');
-    bsSheet.classList.add('bs-open');
-  }
-  function closeBS() {
-    bsOverlay.classList.remove('bs-open');
-    bsSheet.classList.remove('bs-open');
-  }
-
-  bsClose.addEventListener('click', closeBS);
-  bsOverlay.addEventListener('click', closeBS);
-
-  bsSheet.querySelectorAll('.bs-item').forEach(function (item) {
-    item.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (item.dataset.href) { window.location.href = item.dataset.href; return; }
-      bsSheet.querySelectorAll('.bs-item').forEach(function (i) {
-        i.classList.remove('bs-active');
-        i.setAttribute('aria-selected', 'false');
-      });
-      item.classList.add('bs-active');
-      item.setAttribute('aria-selected', 'true');
-      label.textContent = item.dataset.value;
-      closeBS();
-    });
-  });
-
-  /* Toggle: mobile → bottom sheet | desktop → popover */
-  trigger.addEventListener('click', function (e) {
-    e.stopPropagation();
-    if (isMobile()) { openBS(); return; }
-    const isOpen = popover.classList.toggle('open');
-    trigger.classList.toggle('open', isOpen);
-    trigger.setAttribute('aria-expanded', isOpen);
-  });
-
-  /* Selección de opción */
-  popover.querySelectorAll('.popover-item').forEach(function (item) {
-    item.addEventListener('click', function (e) {
-      e.stopPropagation();
-      /* Si tiene href, navegar */
-      if (item.dataset.href) {
-        window.location.href = item.dataset.href;
-        return;
-      }
-      /* Quitar estado activo de todos */
-      popover.querySelectorAll('.popover-item').forEach(function (i) {
-        i.classList.remove('active');
-        i.setAttribute('aria-selected', 'false');
-        var chk = i.querySelector('.popover-check');
-        if (chk) chk.remove();
-      });
-      /* Activar el seleccionado */
-      item.classList.add('active');
-      item.setAttribute('aria-selected', 'true');
-      var check = document.createElement('span');
-      check.className = 'popover-check';
-      check.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1.5 8.5L5.86 13L14.5 3" stroke="#0B0B0B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      item.appendChild(check);
-      label.textContent = item.dataset.value;
-      popover.classList.remove('open');
-      trigger.classList.remove('open');
-      trigger.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  /* Cerrar al click fuera */
-  document.addEventListener('click', function () {
-    popover.classList.remove('open');
-    trigger.classList.remove('open');
-    trigger.setAttribute('aria-expanded', 'false');
-  });
-
-  /* Evitar que el click dentro del popover lo cierre */
-  popover.addEventListener('click', function (e) { e.stopPropagation(); });
-
-  /* _addFavouriteButton — toggle outline ↔ filled */
-  document.querySelectorAll('.btn-favourite').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var isActive = btn.classList.toggle('active');
-      btn.setAttribute('aria-pressed', isActive);
-    });
-  });
-})();
-</script>
 
 <!-- ═══ BUTTON DOCK (mobile fixed bottom) ═══ -->
 <div class="button-dock">
@@ -1058,6 +962,96 @@
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  const trigger    = document.getElementById('dropdown-trigger');
+  const popover    = document.getElementById('popover-values');
+  const label      = document.getElementById('dropdown-label');
+  const bsOverlay  = document.getElementById('bs-overlay');
+  const bsSheet    = document.getElementById('bs-sheet');
+  const bsClose    = document.getElementById('bs-close');
+
+  function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
+
+  function openBS() {
+    bsOverlay.classList.add('bs-open');
+    bsSheet.classList.add('bs-open');
+  }
+  function closeBS() {
+    bsOverlay.classList.remove('bs-open');
+    bsSheet.classList.remove('bs-open');
+  }
+
+  bsClose.addEventListener('click', closeBS);
+  bsOverlay.addEventListener('click', closeBS);
+
+  bsSheet.querySelectorAll('.bs-item').forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (item.dataset.href) { window.location.href = item.dataset.href; return; }
+      bsSheet.querySelectorAll('.bs-item').forEach(function (i) {
+        i.classList.remove('bs-active');
+        i.setAttribute('aria-selected', 'false');
+      });
+      item.classList.add('bs-active');
+      item.setAttribute('aria-selected', 'true');
+      label.textContent = item.dataset.value;
+      closeBS();
+    });
+  });
+
+  /* Toggle: mobile → bottom sheet | desktop → popover */
+  trigger.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (isMobile()) { openBS(); return; }
+    const isOpen = popover.classList.toggle('open');
+    trigger.classList.toggle('open', isOpen);
+    trigger.setAttribute('aria-expanded', isOpen);
+  });
+
+  /* Selección de opción */
+  popover.querySelectorAll('.popover-item').forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (item.dataset.href) { window.location.href = item.dataset.href; return; }
+      popover.querySelectorAll('.popover-item').forEach(function (i) {
+        i.classList.remove('active');
+        i.setAttribute('aria-selected', 'false');
+        var chk = i.querySelector('.popover-check');
+        if (chk) chk.remove();
+      });
+      item.classList.add('active');
+      item.setAttribute('aria-selected', 'true');
+      var check = document.createElement('span');
+      check.className = 'popover-check';
+      check.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1.5 8.5L5.86 13L14.5 3" stroke="#0B0B0B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      item.appendChild(check);
+      label.textContent = item.dataset.value;
+      popover.classList.remove('open');
+      trigger.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* Cerrar al click fuera */
+  document.addEventListener('click', function () {
+    popover.classList.remove('open');
+    trigger.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+  });
+
+  popover.addEventListener('click', function (e) { e.stopPropagation(); });
+
+  /* _addFavouriteButton — toggle outline ↔ filled */
+  document.querySelectorAll('.btn-favourite').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var isActive = btn.classList.toggle('active');
+      btn.setAttribute('aria-pressed', isActive);
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
