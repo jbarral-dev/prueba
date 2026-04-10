@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mi Cuenta – Renta 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --blue:     #15519E;
+      --blue-2:   #4A71C0;
+      --blue-bg:  #E6EEF9;
+      --orange:   #E57E44;
+      --red:      #9D4858;
+      --red-dark: #851A2E;
+      --t1:       #0B0B0B;
+      --t2:       #3B3B3B;
+      --t3:       #707070;
+      --border:   #E0E0E0;
+      --bg:       #F5F5F5;
+      --white:    #FFFFFF;
+    }
+
+    body {
+      background: #D0D0D0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .device {
+      width: 390px;
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── STATUS BAR ─────────────────────────────── */
+    .status-bar {
+      height: 44px;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+    }
+    .status-bar .time {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+    }
+    .status-bar .icons { display: flex; gap: 7px; align-items: center; }
+
+    /* ── TOP NAV ─────────────────────────────────── */
+    .top-nav {
+      background: #1A1A1A;
+      padding: 0 16px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo-box {
+      width: 36px;
+      height: 36px;
+      background: var(--red-dark);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo-box svg { display: block; }
+    .nav-right { display: flex; gap: 18px; align-items: center; }
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── SHARED CARD ─────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── ACCOUNT CARD ────────────────────────────── */
+    .account-card {
+      margin: 14px 14px 0;
+      padding: 16px;
+    }
+    .account-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .account-id {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--t2);
+    }
+    .account-id svg { color: var(--t3); cursor: pointer; }
+    .account-chevron {
+      width: 30px;
+      height: 30px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--t3);
+    }
+    .account-balance {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      margin-bottom: 12px;
+    }
+    .bal-main {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--t1);
+      letter-spacing: -0.4px;
+    }
+    .bal-eur {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--t1);
+      margin-left: 1px;
+    }
+    .account-meta {
+      font-size: 11.5px;
+      color: var(--t3);
+      line-height: 1.9;
+      margin-bottom: 10px;
+    }
+    .account-meta .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .account-meta .meta-val {
+      color: var(--t2);
+      font-weight: 600;
+    }
+    .account-meta svg { color: var(--red); cursor: pointer; flex-shrink: 0; }
+    .account-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .tag-titular {
+      background: #FFF0F2;
+      color: var(--red);
+      border: 1px solid #F5C6CC;
+    }
+    .tag-empresa {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid #C3D8F0;
+    }
+
+    /* ── ACTION ICONS ROW ───────────────────────── */
+    .actions-row {
+      display: flex;
+      justify-content: space-around;
+      padding: 16px 8px;
+    }
+    .action-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+    }
+    .action-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--red-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+    }
+    .action-circle:active { background: var(--red); }
+    .action-label {
+      font-size: 10.5px;
+      color: var(--t2);
+      font-weight: 600;
+      text-align: center;
+      max-width: 68px;
+      line-height: 1.3;
+    }
+
+    /* ── ADVISOR CARD ───────────────────────────── */
+    .advisor-card {
+      margin: 0 14px 14px;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .advisor-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c4b5bd 0%, #8a7080 100%);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .advisor-avatar svg { margin-bottom: -2px; }
+    .advisor-info { flex: 1; min-width: 0; }
+    .advisor-label {
+      font-size: 10.5px;
+      color: var(--t3);
+      margin-bottom: 1px;
+    }
+    .advisor-name {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--t1);
+    }
+    .advisor-actions { display: flex; gap: 14px; }
+    .advisor-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--red);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* ── CHART SECTION ──────────────────────────── */
+    .chart-section {
+      margin: 0 14px 20px;
+      padding: 16px 14px 14px;
+    }
+    .chart-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .chart-title {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--t1);
+    }
+    .chart-help {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--t3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .chart-help span {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--t3);
+      line-height: 1;
+    }
+
+    /* Values legend area */
+    .chart-info { margin-bottom: 12px; }
+    .chart-series-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 4px;
+    }
+    .series-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .series-name {
+      font-size: 12px;
+      color: var(--t2);
+      min-width: 130px;
+    }
+    .series-val {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      transition: opacity .1s;
+    }
+    .series-val.blue   { color: var(--blue); }
+    .series-val.orange { color: var(--orange); }
+    .series-eur { font-size: 11px; font-weight: 600; }
+
+    .chart-date-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .chart-date {
+      font-size: 11px;
+      color: var(--t3);
+      font-weight: 600;
+    }
+
+    /* Canvas */
+    .chart-wrap {
+      position: relative;
+      touch-action: none;
+      user-select: none;
+      cursor: crosshair;
+      margin: 0 -2px;
+    }
+    #chart { display: block; width: 100%; }
+
+    /* Period selector */
+    .period-row {
+      display: flex;
+      gap: 3px;
+      margin-top: 10px;
+    }
+    .period-btn {
+      flex: 1;
+      height: 28px;
+      border: 1.5px solid transparent;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--t3);
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      transition: all .15s;
+    }
+    .period-btn:hover { background: #F0F0F0; }
+    .period-btn.active {
+      background: var(--white);
+      border-color: var(--border);
+      color: var(--t1);
+    }
+
+    /* Description */
+    .chart-desc {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--t3);
+      line-height: 1.7;
+    }
+    .chart-desc strong { color: var(--t2); font-weight: 600; }
+    .chart-desc a { color: var(--blue); text-decoration: none; font-weight: 600; }
+
+    .bottom-pad { height: 40px; }
+  </style>
+</head>
+<body>
+
+<div class="device">
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none">
+        <rect x="0" y="6" width="3" height="6" rx="1" fill="white"/>
+        <rect x="4.5" y="3.5" width="3" height="8.5" rx="1" fill="white"/>
+        <rect x="9" y="1.5" width="3" height="10.5" rx="1" fill="white"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="1" fill="white"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+        <path d="M8 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white"/>
+        <path d="M3.5 6C4.9 4.5 6.3 3.5 8 3.5c1.7 0 3.1 1 4.5 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M1 3C3 1 5.4 0 8 0c2.6 0 5 1 7 3" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+      </svg>
+      <svg width="26" height="13" viewBox="0 0 26 13" fill="none">
+        <rect x="0.5" y="0.5" width="22" height="12" rx="2.5" stroke="white" stroke-opacity="0.5"/>
+        <rect x="1.5" y="1.5" width="17" height="10" rx="2" fill="white"/>
+        <path d="M23.5 4.5v4c.8-.5 1.5-1.2 1.5-2s-.7-1.5-1.5-2z" fill="white" opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <div class="nav-logo-box">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <text x="3" y="17" font-family="Exo 2, sans-serif" font-weight="700" font-size="16" fill="white">R4</text>
+      </svg>
+    </div>
+    <div class="nav-right">
+      <button class="nav-icon-btn">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.8"/>
+          <path d="M15.5 15.5L20 20" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="nav-icon-btn">
+        <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
+          <path d="M1 1h20M1 9h20M1 17h20" stroke="#E57E44" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ACCOUNT CARD -->
+  <div class="card account-card">
+    <div class="account-top-row">
+      <div class="account-id">
+        Cuenta TYH789
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M9.5 2L12 4.5l-7 7H2.5V9l7-7z" stroke="#9D4858" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="account-chevron">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M3 4.5L6 7.5L9 4.5" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="account-balance">
+      <span class="bal-main">2.350.328,00</span>
+      <span class="bal-eur">€</span>
+    </div>
+    <div class="account-meta">
+      <div class="meta-row">
+        <span>IBAN:</span>
+        <span class="meta-val">ES12 0083 0001 11 0087555000</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="1" y="3" width="9" height="10" rx="1.5" stroke="#9D4858" stroke-width="1.3" fill="none"/>
+          <path d="M4 3V2a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-1" stroke="#9D4858" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="meta-row">
+        <span>Límite operativo:</span>
+        <span class="meta-val">12.937,47 €</span>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+          <path d="M1 6S3.5 1 8 1s7 5 7 5-2.5 5-7 5S1 6 1 6z" stroke="#9D4858" stroke-width="1.3" fill="none"/>
+          <circle cx="8" cy="6" r="2" stroke="#9D4858" stroke-width="1.3" fill="none"/>
+        </svg>
+      </div>
+    </div>
+    <div class="account-tags">
+      <div class="tag tag-titular">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <circle cx="5.5" cy="3.5" r="2" stroke="#9D4858" stroke-width="1.2" fill="none"/>
+          <path d="M1.5 10C2 7.8 3.6 6.5 5.5 6.5S9 7.8 9.5 10" stroke="#9D4858" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        </svg>
+        Titular
+      </div>
+      <div class="tag tag-empresa">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <rect x="1" y="3.5" width="9" height="7" rx="1" stroke="#15519E" stroke-width="1.2" fill="none"/>
+          <path d="M3.5 3.5V2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5" stroke="#15519E" stroke-width="1.2" fill="none"/>
+        </svg>
+        La empresa de Mármol S.A.
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ICONS ROW -->
+  <div class="actions-row">
+    <div class="action-item">
+      <div class="action-circle">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.6" fill="none"/>
+          <path d="M11 7v4l3 2.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="action-label">Detalle cuenta</span>
+    </div>
+    <div class="action-item">
+      <div class="action-circle">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="3" y="4" width="16" height="14" rx="2" stroke="white" stroke-width="1.6" fill="none"/>
+          <path d="M7 4V3M15 4V3M3 9h16" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="action-label">Comprar fondo</span>
+    </div>
+    <div class="action-item">
+      <div class="action-circle">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M5 11h12M13 7l4 4-4 4M9 7l-4 4 4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="action-label">Transferencia</span>
+    </div>
+    <div class="action-item">
+      <div class="action-circle">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M5 17L8 7l3 7 3-5 2 4 2-6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="action-label">Plusvalías</span>
+    </div>
+  </div>
+
+  <!-- ADVISOR CARD -->
+  <div class="card advisor-card">
+    <div class="advisor-avatar">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="16" r="8" fill="rgba(255,255,255,0.5)"/>
+        <ellipse cx="22" cy="40" rx="14" ry="11" fill="rgba(255,255,255,0.4)"/>
+      </svg>
+    </div>
+    <div class="advisor-info">
+      <div class="advisor-label">Tu asesor personal</div>
+      <div class="advisor-name">Pablo Navarro</div>
+    </div>
+    <div class="advisor-actions">
+      <div class="advisor-link">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="0.5" y="2" width="12" height="10.5" rx="1.5" stroke="#9D4858" stroke-width="1.2" fill="none"/>
+          <path d="M3 2V1M10 2V1M0.5 5.5h12" stroke="#9D4858" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Pedir cita
+      </div>
+      <div class="advisor-link">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M1 1h11a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H4L1 12V1.5A.5.5 0 0 1 1.5 1z" stroke="#9D4858" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        </svg>
+        Contactar
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART SECTION -->
+  <div class="card chart-section">
+    <div class="chart-header">
+      <span class="chart-title">Evolución de tu patrimonio</span>
+      <div class="chart-help"><span>?</span></div>
+    </div>
+
+    <!-- Series values -->
+    <div class="chart-info">
+      <div class="chart-series-row">
+        <div class="series-dot" style="background:#15519E"></div>
+        <span class="series-name">Patrimonio</span>
+        <span class="series-val blue" id="val-p">118.328,00 <span class="series-eur">€</span></span>
+      </div>
+      <div class="chart-series-row">
+        <div class="series-dot" style="background:#E57E44"></div>
+        <span class="series-name">Entradas y salidas</span>
+        <span class="series-val orange" id="val-f">90.328,00 <span class="series-eur">€</span></span>
+      </div>
+      <div class="chart-date-row">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <rect x="0.5" y="1.5" width="11" height="10" rx="1.5" stroke="#707070" stroke-width="1.2" fill="none"/>
+          <path d="M3 1V0.5M9 1V0.5M0.5 4.5h11" stroke="#707070" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span class="chart-date" id="chart-date">Dic 2025</span>
+      </div>
+    </div>
+
+    <!-- Chart canvas -->
+    <div class="chart-wrap" id="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+
+    <!-- Period selector -->
+    <div class="period-row">
+      <button class="period-btn" data-p="1M">1M</button>
+      <button class="period-btn" data-p="3M">3M</button>
+      <button class="period-btn" data-p="6M">6M</button>
+      <button class="period-btn active" data-p="1Y">1Y</button>
+      <button class="period-btn" data-p="2Y">2Y</button>
+      <button class="period-btn" data-p="YTD">YTD</button>
+    </div>
+
+    <!-- Description -->
+    <div class="chart-desc">
+      Datos en euros. Entradas y salidas es el valor de tu patrimonio al inicio del periodo,
+      ajustado por las <strong>entradas y salidas</strong> que hayas realizado. Al inicio del
+      periodo tenías 10.200 €. Durante el periodo has ingresado un total de 150 € y has
+      retirado 100 €. Al final del periodo tienes 10.300 €, con un resultado de -350 €.
+      <a href="#">Más información</a>
+    </div>
+  </div>
+
+  <div class="bottom-pad"></div>
+</div>
+
+<script>
+/* ============================================================
+   DATASET
+   ============================================================ */
+
+// 12 months 2025 – [patrimony, flows]
+// Anchored to Figma values: Oct(9)=[80224,61577], Dic(11)=[118328,90328]
+const D2025 = [
+  [72000,  55000],   // Ene
+  [80000,  61000],   // Feb
+  [86000,  66000],   // Mar
+  [83000,  64000],   // Abr
+  [78000,  59000],   // May
+  [91000,  70000],   // Jun
+  [98000,  75000],   // Jul
+  [105000, 80000],   // Ago
+  [99000,  76000],   // Sep
+  [80224,  61577],   // Oct ← Figma
+  [108000, 82000],   // Nov
+  [118328, 90328],   // Dic ← Figma
+];
+
+// 2024 data (~75% of 2025, with slight variation)
+const D2024 = [
+  [51000, 39000], [55000, 42000], [60000, 46000], [58000, 44000],
+  [54000, 41000], [63000, 48000], [68000, 52000], [73000, 56000],
+  [69000, 53000], [57000, 44000], [75000, 57000], [81000, 62000],
+];
+
+const MONTHS_S = ['E','F','M','A','M','J','J','A','S','O','N','D'];
+const MONTHS_F = [
+  'Ene 2025','Feb 2025','Mar 2025','Abr 2025','May 2025','Jun 2025',
+  'Jul 2025','Ago 2025','Sep 2025','Oct 2025','Nov 2025','Dic 2025',
+];
+const MONTHS_F24 = MONTHS_F.map(m => m.replace('2025','2024'));
+const MONTHS_S24 = MONTHS_S.slice(); // same abbreviations
+
+function buildDataset(period) {
+  switch (period) {
+    case '1M':  return { rows: D2025.slice(11),   labels: MONTHS_F.slice(11),   shorts: MONTHS_S.slice(11) };
+    case '3M':  return { rows: D2025.slice(9),    labels: MONTHS_F.slice(9),    shorts: MONTHS_S.slice(9)  };
+    case '6M':  return { rows: D2025.slice(6),    labels: MONTHS_F.slice(6),    shorts: MONTHS_S.slice(6)  };
+    case 'YTD': return { rows: D2025,              labels: MONTHS_F,              shorts: MONTHS_S            };
+    case '2Y':  return {
+      rows:   [...D2024, ...D2025],
+      labels: [...MONTHS_F24, ...MONTHS_F],
+      shorts: [...MONTHS_S24, ...MONTHS_S],
+    };
+    default:    // 1Y
+      return { rows: D2025, labels: MONTHS_F, shorts: MONTHS_S };
+  }
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  period:    '1Y',
+  activeIdx: 11,    // default = last month
+  dragging:  false,
+  rafId:     null,
+};
+
+let ds = buildDataset('1Y');
+
+/* ============================================================
+   CANVAS
+   ============================================================ */
+const canvas = document.getElementById('chart');
+const wrap   = document.getElementById('chart-wrap');
+const ctx    = canvas.getContext('2d');
+const DPR    = window.devicePixelRatio || 1;
+
+const PAD = { top: 10, right: 10, bottom: 28, left: 6 };
+
+function canvasSize() {
+  const w = wrap.clientWidth;
+  const h = 190;
+  canvas.width  = w * DPR;
+  canvas.height = h * DPR;
+  canvas.style.width  = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  return { w, h };
+}
+
+/* Map data index → canvas x */
+function xPoints(n, w) {
+  const chartW = w - PAD.left - PAD.right;
+  return Array.from({ length: n }, (_, i) =>
+    PAD.left + (i / Math.max(n - 1, 1)) * chartW
+  );
+}
+
+/* Map value → canvas y */
+function yOf(val, maxVal, h) {
+  const chartH = h - PAD.top - PAD.bottom;
+  return PAD.top + chartH * (1 - val / maxVal);
+}
+
+/* Catmull-Rom spline via bezier */
+function drawCurve(pts, tension) {
+  if (pts.length < 2) return;
+  ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(i - 1, 0)];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[Math.min(i + 2, pts.length - 1)];
+    const t  = tension;
+    const cp1x = p1.x + (p2.x - p0.x) * t;
+    const cp1y = p1.y + (p2.y - p0.y) * t;
+    const cp2x = p2.x - (p3.x - p1.x) * t;
+    const cp2y = p2.y - (p3.y - p1.y) * t;
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+  }
+}
+
+/* Interpolate Y at arbitrary canvas X between two points */
+function interpY(pts, x) {
+  for (let i = 0; i < pts.length - 1; i++) {
+    if (x >= pts[i].x && x <= pts[i + 1].x) {
+      const t = (x - pts[i].x) / (pts[i + 1].x - pts[i].x);
+      return pts[i].y + (pts[i + 1].y - pts[i].y) * t;
+    }
+  }
+  if (x <= pts[0].x) return pts[0].y;
+  return pts[pts.length - 1].y;
+}
+
+/* ============================================================
+   DRAW
+   ============================================================ */
+function draw(indicatorX) {
+  const { w, h }  = canvasSize();
+  const { rows, shorts } = ds;
+  const n         = rows.length;
+  const maxVal    = Math.max(...rows.flatMap(r => r)) * 1.15;
+  const baseline  = h - PAD.bottom;
+  const xs        = xPoints(n, w);
+
+  const pPts = rows.map(([p], i) => ({ x: xs[i], y: yOf(p, maxVal, h) }));
+  const fPts = rows.map(([, f], i) => ({ x: xs[i], y: yOf(f, maxVal, h) }));
+
+  /* Find nearest data index from indicatorX */
+  let aidx = state.activeIdx;
+  if (indicatorX != null) {
+    let best = Infinity;
+    xs.forEach((x, i) => {
+      const d = Math.abs(indicatorX - x);
+      if (d < best) { best = d; aidx = i; }
+    });
+  }
+
+  ctx.clearRect(0, 0, w, h);
+
+  /* ── Grid lines ── */
+  ctx.strokeStyle = '#EEEEEE';
+  ctx.lineWidth   = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = PAD.top + (h - PAD.top - PAD.bottom) * (i / 4);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(w - PAD.right, y); ctx.stroke();
+  }
+
+  /* ── Patrimony area fill ── */
+  const areaGrad = ctx.createLinearGradient(0, PAD.top, 0, baseline);
+  areaGrad.addColorStop(0,   'rgba(21,81,158,0.18)');
+  areaGrad.addColorStop(0.7, 'rgba(21,81,158,0.04)');
+  areaGrad.addColorStop(1,   'rgba(21,81,158,0)');
+  ctx.beginPath();
+  drawCurve(pPts, 0.18);
+  ctx.lineTo(pPts[pPts.length - 1].x, baseline);
+  ctx.lineTo(pPts[0].x, baseline);
+  ctx.closePath();
+  ctx.fillStyle = areaGrad;
+  ctx.fill();
+
+  /* ── Patrimony line ── */
+  ctx.beginPath();
+  drawCurve(pPts, 0.18);
+  ctx.strokeStyle = '#15519E';
+  ctx.lineWidth   = 2;
+  ctx.lineJoin    = 'round';
+  ctx.stroke();
+
+  /* ── Flows line (dashed orange) ── */
+  ctx.beginPath();
+  drawCurve(fPts, 0.18);
+  ctx.strokeStyle = '#E57E44';
+  ctx.lineWidth   = 1.8;
+  ctx.setLineDash([5, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  /* ── Vertical indicator ── */
+  const indX = xs[aidx];
+  ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+  ctx.lineWidth   = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(indX, PAD.top);
+  ctx.lineTo(indX, baseline);
+  ctx.stroke();
+
+  /* ── Dot on patrimony line ── */
+  const pY = interpY(pPts, indX);
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(indX, pY, 6, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#15519E';
+  ctx.beginPath(); ctx.arc(indX, pY, 4.5, 0, Math.PI * 2); ctx.fill();
+
+  /* ── Dot on flows line ── */
+  const fY = interpY(fPts, indX);
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(indX, fY, 5.5, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#E57E44';
+  ctx.beginPath(); ctx.arc(indX, fY, 4, 0, Math.PI * 2); ctx.fill();
+
+  /* ── X labels ── */
+  const step = n > 12 ? 2 : 1;
+  ctx.textAlign = 'center';
+  xs.forEach((x, i) => {
+    if (i % step !== 0) return;
+    const hot = (i === aidx);
+    ctx.fillStyle = hot ? '#0B0B0B' : '#9E9E9E';
+    ctx.font = hot
+      ? `bold 10px 'Open Sans', sans-serif`
+      : `10px 'Open Sans', sans-serif`;
+    ctx.fillText(shorts[i], x, h - 8);
+  });
+
+  return aidx;
+}
+
+/* ============================================================
+   UPDATE VALUES
+   ============================================================ */
+function fmt(n) {
+  return n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function updateValues(idx) {
+  if (idx < 0 || idx >= ds.rows.length) idx = ds.rows.length - 1;
+  const [p, f] = ds.rows[idx];
+  document.getElementById('val-p').innerHTML   = `${fmt(p)} <span class="series-eur">€</span>`;
+  document.getElementById('val-f').innerHTML   = `${fmt(f)} <span class="series-eur">€</span>`;
+  document.getElementById('chart-date').textContent = ds.labels[idx] || '';
+}
+
+/* ============================================================
+   DRAG INTERACTION
+   ============================================================ */
+function getCanvasX(e) {
+  const rect   = canvas.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  return clientX - rect.left;
+}
+
+function nearestIdx(x) {
+  const xs   = xPoints(ds.rows.length, wrap.clientWidth);
+  let best = Infinity, idx = state.activeIdx;
+  xs.forEach((cx, i) => {
+    const d = Math.abs(x - cx);
+    if (d < best) { best = d; idx = i; }
+  });
+  return idx;
+}
+
+function cancelAnim() {
+  if (state.rafId) { cancelAnimationFrame(state.rafId); state.rafId = null; }
+}
+
+canvas.addEventListener('mousedown',  onStart);
+canvas.addEventListener('touchstart', onStart, { passive: false });
+window.addEventListener('mousemove',  onMove);
+window.addEventListener('touchmove',  onMove, { passive: false });
+window.addEventListener('mouseup',    onEnd);
+window.addEventListener('touchend',   onEnd);
+
+function onStart(e) {
+  e.preventDefault();
+  cancelAnim();
+  state.dragging = true;
+  const x   = getCanvasX(e);
+  const idx = nearestIdx(x);
+  state.activeIdx = idx;
+  updateValues(idx);
+  draw(x);
+}
+
+function onMove(e) {
+  if (!state.dragging) return;
+  e.preventDefault();
+  const x   = getCanvasX(e);
+  const idx = nearestIdx(x);
+  if (idx !== state.activeIdx) {
+    state.activeIdx = idx;
+    updateValues(idx);
+  }
+  draw(x);
+}
+
+function onEnd() {
+  if (!state.dragging) return;
+  state.dragging = false;
+  const lastIdx = ds.rows.length - 1;
+  if (state.activeIdx !== lastIdx) animateTo(lastIdx);
+}
+
+/* ============================================================
+   SNAP-BACK ANIMATION
+   ============================================================ */
+function animateTo(target) {
+  const xs   = xPoints(ds.rows.length, wrap.clientWidth);
+  const from = xs[state.activeIdx] ?? xs[xs.length - 1];
+  const to   = xs[target];
+  const DUR  = 380;
+  const t0   = performance.now();
+  const ease = t => 1 - Math.pow(1 - t, 3);
+
+  function step(now) {
+    const t   = Math.min((now - t0) / DUR, 1);
+    const x   = from + (to - from) * ease(t);
+    const idx = nearestIdx(x);
+    if (idx !== state.activeIdx) {
+      state.activeIdx = idx;
+      updateValues(idx);
+    }
+    draw(x);
+    if (t < 1) {
+      state.rafId = requestAnimationFrame(step);
+    } else {
+      state.activeIdx = target;
+      updateValues(target);
+      draw(null);
+    }
+  }
+  state.rafId = requestAnimationFrame(step);
+}
+
+/* ============================================================
+   PERIOD BUTTONS
+   ============================================================ */
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    cancelAnim();
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.period    = btn.dataset.p;
+    ds              = buildDataset(state.period);
+    state.activeIdx = ds.rows.length - 1;
+    updateValues(state.activeIdx);
+    draw(null);
+  });
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+window.addEventListener('resize', () => draw(null));
+updateValues(state.activeIdx);
+draw(null);
+</script>
+
+</body>
+</html>
