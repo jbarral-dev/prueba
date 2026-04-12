@@ -97,66 +97,84 @@
     /* ── SHARED CARD ─────────────────────────────── */
     .card {
       background: var(--white);
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid var(--border);
     }
 
+    /* ── MAIN CONTAINER (Figma: layout_81CPH4) ───── */
+    /* padding: 0 12px · gap: 16px entre tarjetas     */
+    .main-container {
+      padding: 32px 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
     /* ── ACCOUNT CARD ────────────────────────────── */
+    /* layout_R4GI83: padding 16px · gap 16px         */
     .account-card {
-      margin: 14px 14px 0;
       padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
     .account-top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
     }
     .account-id {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--t2);
+      /* Body/ExtraSmall/Normal */
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      color: var(--t3);
     }
-    .account-id svg { color: var(--t3); cursor: pointer; }
+    .account-id strong { font-weight: 600; color: var(--t2); }
+    .account-id svg { cursor: pointer; flex-shrink: 0; }
     .account-chevron {
-      width: 30px;
-      height: 30px;
-      border: 1.5px solid var(--border);
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: var(--t3);
     }
     .account-balance {
       display: flex;
       align-items: baseline;
-      gap: 2px;
-      margin-bottom: 12px;
+      gap: 4px;
     }
+    /* Heading/Medium: Exo 2 · 700 · 24px · lh 28px  */
     .bal-main {
       font-family: 'Exo 2', sans-serif;
       font-weight: 700;
-      font-size: 26px;
+      font-size: 24px;
+      line-height: 28px;
       color: var(--t1);
-      letter-spacing: -0.4px;
+      letter-spacing: -0.3px;
     }
     .bal-eur {
       font-family: 'Exo 2', sans-serif;
       font-weight: 700;
       font-size: 20px;
+      line-height: 28px;
       color: var(--t1);
-      margin-left: 1px;
     }
+    /* Body/ExtraSmall/Normal: OS · 400 · 12px · 16px */
     .account-meta {
-      font-size: 11.5px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
       color: var(--t3);
-      line-height: 1.9;
-      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
     .account-meta .meta-row {
       display: flex;
@@ -167,15 +185,17 @@
       color: var(--t2);
       font-weight: 600;
     }
-    .account-meta svg { color: var(--red); cursor: pointer; flex-shrink: 0; }
+    .account-meta svg { cursor: pointer; flex-shrink: 0; }
     .account-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    /* Body/ExtraSmall/Normal: 12px · 400 */
     .tag {
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      padding: 3px 8px;
+      line-height: 16px;
+      padding: 2px 8px;
       border-radius: 4px;
     }
     .tag-titular {
@@ -190,21 +210,24 @@
     }
 
     /* ── ACTION ICONS ROW ───────────────────────── */
+    /* layout_UXVPBH: justify space-between           */
     .actions-row {
       display: flex;
-      justify-content: space-around;
-      padding: 16px 8px;
+      justify-content: space-between;
+      align-items: flex-start;
     }
     .action-item {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 7px;
+      gap: 4px;
       cursor: pointer;
     }
+    /* layout_OY6RN4: padding 20px → circle 48px      */
     .action-circle {
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: var(--red-dark);
       display: flex;
@@ -213,22 +236,23 @@
       transition: background .15s;
     }
     .action-circle:active { background: var(--red); }
+    /* Body/ExtraSmall/Normal: OS · 400 · 12px · 16px */
     .action-label {
-      font-size: 10.5px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
       color: var(--t2);
-      font-weight: 600;
       text-align: center;
-      max-width: 68px;
-      line-height: 1.3;
+      max-width: 72px;
     }
 
     /* ── ADVISOR CARD ───────────────────────────── */
+    /* layout_OVSDFL: padding 16px · gap 16px         */
     .advisor-card {
-      margin: 0 14px 14px;
-      padding: 13px 14px;
+      padding: 16px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
     }
     .advisor-avatar {
       width: 44px;
@@ -242,45 +266,64 @@
       justify-content: center;
     }
     .advisor-avatar svg { margin-bottom: -2px; }
-    .advisor-info { flex: 1; min-width: 0; }
-    .advisor-label {
-      font-size: 10.5px;
-      color: var(--t3);
-      margin-bottom: 1px;
+    .advisor-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
+    /* Body/ExtraSmall/Normal: OS · 400 · 12px · 16px */
+    .advisor-label {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      color: var(--t3);
+    }
+    /* Body/Medium/Bold: OS · 700 · 16px · 24px       */
     .advisor-name {
-      font-family: 'Exo 2', sans-serif;
-      font-weight: 600;
-      font-size: 14px;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
       color: var(--t1);
     }
-    .advisor-actions { display: flex; gap: 14px; }
+    /* layout_Z0HR78: gap 20px                        */
+    .advisor-actions { display: flex; gap: 20px; }
+    /* Body/Small/SemiBold: OS · 600 · 14px · 20px   */
     .advisor-link {
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 600;
+      line-height: 20px;
       color: var(--red);
       cursor: pointer;
       white-space: nowrap;
     }
 
     /* ── CHART SECTION ──────────────────────────── */
+    /* layout_WB875G: padding 16px · gap 24px         */
     .chart-section {
-      margin: 0 14px 20px;
-      padding: 16px 14px 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 16px;
     }
+    /* layout_A0Y1QH: gap 8px                         */
     .chart-header {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 14px;
+      gap: 8px;
     }
+    /* Heading/Small: Exo 2 · 700 · 20px · lh 24px   */
     .chart-title {
       font-family: 'Exo 2', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 24px;
       color: var(--t1);
     }
     .chart-help {
@@ -301,45 +344,76 @@
       line-height: 1;
     }
 
-    /* Values legend area */
-    .chart-info { margin-bottom: 12px; }
+    /* Data section: layout_PL8S8Q · gap 8px          */
+    .chart-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    /* Each row: layout_T16GZM · gap 12px             */
     .chart-series-row {
       display: flex;
       align-items: center;
-      gap: 7px;
-      margin-bottom: 4px;
+      gap: 12px;
+    }
+    /* Legend label: layout_TZNBDE · gap 4px          */
+    .series-legend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
     }
     .series-dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
     }
+    /* Body/Small/Normal: OS · 400 · 14px · 20px      */
     .series-name {
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
       color: var(--t2);
-      min-width: 130px;
     }
+    /* Value: layout_TZNBDE · gap 4px                 */
     .series-val {
-      font-family: 'Exo 2', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
       transition: opacity .1s;
     }
-    .series-val.blue   { color: var(--blue); }
-    .series-val.orange { color: var(--orange); }
-    .series-eur { font-size: 11px; font-weight: 600; }
+    /* Patrimonio: Body/ExtraLarge/Semibold · OS · 600 · 20px · 26px */
+    .series-val.blue .val-num {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 26px;
+      color: var(--blue);
+    }
+    /* Entradas: Body/Medium/Normal · OS · 400 · 16px · 24px */
+    .series-val.orange .val-num {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: var(--orange);
+    }
+    .series-eur {
+      font-size: 12px;
+      font-weight: 400;
+      color: inherit;
+    }
 
+    /* Body/Small/Normal: OS · 400 · 14px · 20px      */
     .chart-date-row {
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 6px;
+      gap: 4px;
     }
     .chart-date {
-      font-size: 11px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
       color: var(--t3);
-      font-weight: 600;
     }
 
     /* Canvas */
@@ -348,23 +422,23 @@
       touch-action: none;
       user-select: none;
       cursor: crosshair;
-      margin: 0 -2px;
     }
     #chart { display: block; width: 100%; }
 
     /* Period selector */
     .period-row {
       display: flex;
-      gap: 3px;
-      margin-top: 10px;
+      gap: 4px;
     }
     .period-btn {
       flex: 1;
-      height: 28px;
-      border: 1.5px solid transparent;
+      height: 32px;
+      border: 1px solid transparent;
       border-radius: 6px;
-      font-size: 11.5px;
-      font-weight: 600;
+      /* Body/Small/Normal: OS · 400 · 14px · 20px    */
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
       color: var(--t3);
       background: transparent;
       cursor: pointer;
@@ -376,16 +450,17 @@
       background: var(--white);
       border-color: var(--border);
       color: var(--t1);
+      font-weight: 600;
     }
 
-    /* Description */
+    /* Body/Small/Normal: OS · 400 · 14px · 20px      */
     .chart-desc {
-      margin-top: 14px;
-      padding-top: 12px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
-      font-size: 11px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
       color: var(--t3);
-      line-height: 1.7;
     }
     .chart-desc strong { color: var(--t2); font-weight: 600; }
     .chart-desc a { color: var(--blue); text-decoration: none; font-weight: 600; }
@@ -442,11 +517,13 @@
     </div>
   </div>
 
+  <div class="main-container">
+
   <!-- ACCOUNT CARD -->
   <div class="card account-card">
     <div class="account-top-row">
       <div class="account-id">
-        Cuenta TYH789
+        <strong>Cuenta TYH789</strong>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M9.5 2L12 4.5l-7 7H2.5V9l7-7z" stroke="#9D4858" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
         </svg>
@@ -571,18 +648,31 @@
       <div class="chart-help"><span>?</span></div>
     </div>
 
-    <!-- Series values -->
+    <!-- Series values: layout_PL8S8Q gap 8px -->
     <div class="chart-info">
+      <!-- Row 1: layout_T16GZM gap 12px -->
       <div class="chart-series-row">
-        <div class="series-dot" style="background:#15519E"></div>
-        <span class="series-name">Patrimonio</span>
-        <span class="series-val blue" id="val-p">118.328,00 <span class="series-eur">€</span></span>
+        <div class="series-legend">
+          <div class="series-dot" style="background:#15519E"></div>
+          <span class="series-name">Patrimonio</span>
+        </div>
+        <div class="series-val blue">
+          <span class="val-num" id="val-p">118.328,00</span>
+          <span class="series-eur">€</span>
+        </div>
       </div>
+      <!-- Row 2 -->
       <div class="chart-series-row">
-        <div class="series-dot" style="background:#E57E44"></div>
-        <span class="series-name">Entradas y salidas</span>
-        <span class="series-val orange" id="val-f">90.328,00 <span class="series-eur">€</span></span>
+        <div class="series-legend">
+          <div class="series-dot" style="background:#E57E44"></div>
+          <span class="series-name">Entradas y salidas</span>
+        </div>
+        <div class="series-val orange">
+          <span class="val-num" id="val-f">90.328,00</span>
+          <span class="series-eur">€</span>
+        </div>
       </div>
+      <!-- Date row -->
       <div class="chart-date-row">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
           <rect x="0.5" y="1.5" width="11" height="10" rx="1.5" stroke="#707070" stroke-width="1.2" fill="none"/>
@@ -617,6 +707,7 @@
     </div>
   </div>
 
+  </div><!-- /.main-container -->
   <div class="bottom-pad"></div>
 </div>
 
@@ -863,8 +954,8 @@ function fmt(n) {
 function updateValues(idx) {
   if (idx < 0 || idx >= ds.rows.length) idx = ds.rows.length - 1;
   const [p, f] = ds.rows[idx];
-  document.getElementById('val-p').innerHTML   = `${fmt(p)} <span class="series-eur">€</span>`;
-  document.getElementById('val-f').innerHTML   = `${fmt(f)} <span class="series-eur">€</span>`;
+  document.getElementById('val-p').textContent = fmt(p);
+  document.getElementById('val-f').textContent = fmt(f);
   document.getElementById('chart-date').textContent = ds.labels[idx] || '';
 }
 
