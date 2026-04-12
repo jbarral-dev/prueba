@@ -23,7 +23,7 @@
       --t2:       #3B3B3B;
       --t3:       #707070;
       --border:   #E0E0E0;
-      --bg:       #F5F5F5;
+      --bg:       #FCFCFC;
       --white:    #FFFFFF;
     }
 
@@ -35,9 +35,9 @@
 
     /* ── TOP NAV ─────────────────────────────────── */
     .top-nav {
-      background: #1A1A1A;
+      background: #3B3B3B;
       padding: 0 16px;
-      height: 52px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -247,24 +247,24 @@
       font-size: 12px;
       font-weight: 400;
       line-height: 16px;
-      color: var(--t2);
+      color: var(--t1);
       text-align: center;
       max-width: 72px;
     }
 
     /* ── ADVISOR CARD (R4CardAdvisor) ───────────── */
-    /* layout_YFNU94: row · padding 16px · gap 16px  */
+    /* layout_YFNU94: row · padding 16px · gap 20px  */
     .advisor-card {
       padding: 16px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 20px;
     }
-    /* R4Avatar: 64×64, border-radius 50px, bg #707070 */
+    /* R4Avatar: 64×64, border-radius 100px, bg #707070 */
     .advisor-avatar {
       width: 64px;
       height: 64px;
-      border-radius: 50px;
+      border-radius: 100px;
       background: #707070;
       flex-shrink: 0;
       overflow: hidden;
@@ -350,21 +350,16 @@
       color: var(--t1);
     }
     .chart-help {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid var(--t3);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--white);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
-    }
-    .chart-help span {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--t3);
-      line-height: 1;
     }
 
     /* Data section: layout_PL8S8Q · gap 8px          */
@@ -433,7 +428,7 @@
       font-size: 14px;
       font-weight: 400;
       line-height: 20px;
-      color: var(--t3);
+      color: var(--t2);
     }
 
     /* Canvas */
@@ -448,42 +443,38 @@
     /* Period selector */
     .period-row {
       display: flex;
-      gap: 4px;
+      gap: 12px;
+      overflow-x: auto;
     }
     .period-btn {
       flex: 1;
       height: 32px;
-      border: 1px solid transparent;
-      border-radius: 6px;
-      /* Body/Small/Normal: OS · 400 · 14px · 20px    */
+      border: 1px solid #ABABAB;
+      border-radius: 8px;
       font-size: 14px;
       font-weight: 400;
       line-height: 20px;
-      color: var(--t3);
-      background: transparent;
+      color: var(--t2);
+      background: #FFFFFF;
       cursor: pointer;
       font-family: 'Open Sans', sans-serif;
       transition: all .15s;
+      white-space: nowrap;
     }
-    .period-btn:hover { background: #F0F0F0; }
     .period-btn.active {
-      background: var(--white);
-      border-color: var(--border);
+      background: #FCFCFC;
+      border: 2px solid #0B0B0B;
       color: var(--t1);
       font-weight: 600;
     }
 
     /* Body/Small/Normal: OS · 400 · 14px · 20px      */
     .chart-desc {
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
       font-size: 14px;
       font-weight: 400;
       line-height: 20px;
       color: var(--t3);
     }
-    .chart-desc strong { color: var(--t2); font-weight: 600; }
-    .chart-desc a { color: var(--blue); text-decoration: none; font-weight: 600; }
 
     .bottom-pad { height: 40px; }
 
@@ -621,11 +612,11 @@
       </div>
       <div class="advisor-actions">
         <button class="advisor-link">
-          <svg width="14" height="15" viewBox="0 0 14 15" fill="none"><rect x="1" y="2" width="12" height="12" rx="1.5" stroke="#9D4858" stroke-width="1.2"/><path d="M4 1V3M10 1V3M1 6H13" stroke="#9D4858" stroke-width="1.2" stroke-linecap="round"/><path d="M4 9H7M9 9H10M4 11.5H5" stroke="#9D4858" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="13" rx="1.5" stroke="#9D4858" stroke-width="1.2"/><path d="M4.5 1V3M11.5 1V3M1 6.5H15" stroke="#9D4858" stroke-width="1.2" stroke-linecap="round"/><path d="M4.5 10H7.5M9.5 10H11M4.5 12.5H6" stroke="#9D4858" stroke-width="1.2" stroke-linecap="round"/></svg>
           Pedir cita
         </button>
         <button class="advisor-link">
-          <svg width="15" height="14" viewBox="0 0 15 14" fill="none"><path d="M1 1.5H9.5A1 1 0 0 1 10.5 2.5V7.5A1 1 0 0 1 9.5 8.5H5L1 11V2.5A1 1 0 0 1 2 1.5Z" stroke="#9D4858" stroke-width="1.2" stroke-linejoin="round"/><path d="M12.5 4.5H13A1 1 0 0 1 14 5.5V10A1 1 0 0 1 13 11H10L8.5 12.5V10.5" stroke="#9D4858" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 1.5H10A1 1 0 0 1 11 2.5V8A1 1 0 0 1 10 9H5L1 12V2.5A1 1 0 0 1 2 1.5Z" stroke="#9D4858" stroke-width="1.2" stroke-linejoin="round"/><path d="M13 5H13.5A1 1 0 0 1 14.5 6V11A1 1 0 0 1 13.5 12H10.5L9 13.5V11.5" stroke="#9D4858" stroke-width="1.2" stroke-linejoin="round"/></svg>
           Contactar
         </button>
       </div>
@@ -644,7 +635,7 @@
       <!-- Row 1: layout_T16GZM gap 12px -->
       <div class="chart-series-row">
         <div class="series-legend">
-          <div class="series-dot" style="background:#15519E"></div>
+          <div class="series-dot" style="background:#4A71C0"></div>
           <span class="series-name">Patrimonio</span>
         </div>
         <div class="series-val blue">
@@ -665,7 +656,7 @@
       </div>
       <!-- Date row -->
       <div class="chart-date-row">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="0.5" y="1.5" width="12" height="11" rx="1.5" stroke="#707070" stroke-width="1.2"/><path d="M3.5 0.5V2.5M9.5 0.5V2.5M0.5 5H12.5" stroke="#707070" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="0.5" y="1.5" width="13" height="12" rx="1.5" stroke="#3B3B3B" stroke-width="1.2"/><path d="M4 0.5V2.5M10 0.5V2.5M0.5 5.5H13.5" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round"/></svg>
         <span class="chart-date" id="chart-date">Dic 2025</span>
       </div>
     </div>
@@ -688,10 +679,10 @@
     <!-- Description -->
     <div class="chart-desc">
       Datos en euros. Entradas y salidas es el valor de tu patrimonio al inicio del periodo,
-      ajustado por las <strong>entradas y salidas</strong> que hayas realizado. Al inicio del
+      ajustado por las entradas y salidas que hayas realizado. Al inicio del
       periodo tenías 10.200 €. Durante el periodo has ingresado un total de 150 € y has
       retirado 100 €. Al final del periodo tienes 10.300 €, con un resultado de -350 €.
-      <a href="#">Más información</a>
+      Más información
     </div>
   </div>
 
@@ -775,7 +766,7 @@ const PAD = { top: 10, right: 10, bottom: 28, left: 6 };
 
 function canvasSize() {
   const w = wrap.clientWidth;
-  const h = 190;
+  const h = 200;
   canvas.width  = w * DPR;
   canvas.height = h * DPR;
   canvas.style.width  = w + 'px';
