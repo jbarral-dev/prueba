@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Cuenta – Renta 4</title>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -35,10 +35,17 @@
     }
 
     .device {
-      width: 390px;
+      width: 100%;
+      max-width: 480px;
       background: var(--bg);
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    /* En móvil real: sin fondo gris ni status bar de simulador */
+    @media (max-width: 480px) {
+      body { background: var(--bg); }
+      .status-bar { display: none; }
     }
 
     /* ── STATUS BAR ─────────────────────────────── */
