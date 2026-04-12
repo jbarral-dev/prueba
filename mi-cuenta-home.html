@@ -28,43 +28,10 @@
     }
 
     body {
-      background: #D0D0D0;
-      display: flex;
-      justify-content: center;
+      background: var(--bg);
       min-height: 100vh;
       font-family: 'Open Sans', sans-serif;
     }
-
-    .device {
-      width: 100%;
-      max-width: 480px;
-      background: var(--bg);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* En móvil real: sin fondo gris ni status bar de simulador */
-    @media (max-width: 480px) {
-      body { background: var(--bg); }
-      .status-bar { display: none; }
-    }
-
-    /* ── STATUS BAR ─────────────────────────────── */
-    .status-bar {
-      height: 44px;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-    }
-    .status-bar .time {
-      font-family: 'Exo 2', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      color: #fff;
-    }
-    .status-bar .icons { display: flex; gap: 7px; align-items: center; }
 
     /* ── TOP NAV ─────────────────────────────────── */
     .top-nav {
@@ -439,24 +406,21 @@
       gap: 2px;
       transition: opacity .1s;
     }
-    /* Patrimonio: Body/ExtraLarge/Semibold · OS · 600 · 20px · 26px */
-    .series-val.blue .val-num {
+    /* Patrimonio: Body/ExtraLarge/Semibold · OS · 600 · 20px · 26px · #0B0B0B */
+    .series-val.blue .val-num,
+    .series-val.blue .series-eur {
       font-size: 20px;
       font-weight: 600;
       line-height: 26px;
-      color: var(--blue);
+      color: #0B0B0B;
     }
-    /* Entradas: Body/Medium/Normal · OS · 400 · 16px · 24px */
-    .series-val.orange .val-num {
+    /* Entradas: Body/Medium/Normal · OS · 400 · 16px · 24px · #0B0B0B */
+    .series-val.orange .val-num,
+    .series-val.orange .series-eur {
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
-      color: var(--orange);
-    }
-    .series-eur {
-      font-size: 12px;
-      font-weight: 400;
-      color: inherit;
+      color: #0B0B0B;
     }
 
     /* Body/Small/Normal: OS · 400 · 14px · 20px      */
@@ -539,31 +503,6 @@
   </style>
 </head>
 <body>
-
-<div class="device">
-
-  <!-- STATUS BAR -->
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="icons">
-      <svg width="17" height="12" viewBox="0 0 17 12" fill="none">
-        <rect x="0" y="6" width="3" height="6" rx="1" fill="white"/>
-        <rect x="4.5" y="3.5" width="3" height="8.5" rx="1" fill="white"/>
-        <rect x="9" y="1.5" width="3" height="10.5" rx="1" fill="white"/>
-        <rect x="13.5" y="0" width="3" height="12" rx="1" fill="white"/>
-      </svg>
-      <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-        <path d="M8 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white"/>
-        <path d="M3.5 6C4.9 4.5 6.3 3.5 8 3.5c1.7 0 3.1 1 4.5 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-        <path d="M1 3C3 1 5.4 0 8 0c2.6 0 5 1 7 3" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
-      </svg>
-      <svg width="26" height="13" viewBox="0 0 26 13" fill="none">
-        <rect x="0.5" y="0.5" width="22" height="12" rx="2.5" stroke="white" stroke-opacity="0.5"/>
-        <rect x="1.5" y="1.5" width="17" height="10" rx="2" fill="white"/>
-        <path d="M23.5 4.5v4c.8-.5 1.5-1.2 1.5-2s-.7-1.5-1.5-2z" fill="white" opacity="0.5"/>
-      </svg>
-    </div>
-  </div>
 
   <!-- TOP NAV -->
   <div class="top-nav">
@@ -758,7 +697,6 @@
 
   </div><!-- /.main-container -->
   <div class="bottom-pad"></div>
-</div>
 
 <script>
 /* ============================================================
